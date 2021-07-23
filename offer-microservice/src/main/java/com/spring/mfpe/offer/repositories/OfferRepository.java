@@ -20,4 +20,7 @@ public interface OfferRepository extends CrudRepository<Offer, Integer> {
 	@Query("from Offer where month(open_date)=?1 and year(open_date)=?2 and day(open_date)=?3")
 	public List<Offer> getByPostedDate(int month , int year, int day);
 	
+	//return offers by emp_id
+	@Query("from Offer where emp_id=?1")
+	public List<Offer> getByEmpId(int emp_id);
 }

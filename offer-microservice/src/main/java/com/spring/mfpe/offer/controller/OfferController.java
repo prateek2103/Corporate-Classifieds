@@ -134,4 +134,18 @@ public class OfferController {
 		
 		return status;
 	}
+	
+	/**
+	 * returns the list of offers for a particular employee id
+	 * @param emp_id
+	 * @return
+	 * @throws OfferNotFoundException 
+	 */
+	@GetMapping("/getOffers/{emp_id}")
+	public List<Offer> getOffersById(@PathVariable("emp_id") int emp_id) throws OfferNotFoundException{
+		log.debug("inside getOffersById method of offer microservice");
+		List<Offer> offers = offerService.getOffersById(emp_id);
+		
+		return offers;
+	}
 }

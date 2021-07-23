@@ -234,4 +234,23 @@ public class OfferService {
 		
 		return successResponse;
 	}
+
+	/**
+	 * service to return offers by a particular emp_id
+	 * @param emp_id
+	 * @return
+	 * @throws OfferNotFoundException
+	 */
+	public List<Offer> getOffersById(int emp_id) throws OfferNotFoundException {
+		//verify the employee
+		
+		//get the offer details for the employee
+		List<Offer> offers = offerRepository.getByEmpId(emp_id);
+		
+		if(offers.size()==0) {
+			throw new OfferNotFoundException("no offers found");
+		}
+		
+		return offers;
+	}
 }
