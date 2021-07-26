@@ -14,8 +14,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "Employee")
+@Getter
+@Setter
 public class Employee {
 
 	@Id
@@ -57,95 +62,7 @@ public class Employee {
 	@ManyToMany(mappedBy = "likedByEmployees", fetch = FetchType.LAZY)
 	private Set<Offer> likedOffers = new HashSet<>();
 
-	// getters and setters
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(String department) {
-		this.department = department;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	public int getAge() {
-		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	}
-
-	public Long getContactNumber() {
-		return contactNumber;
-	}
-
-	public void setContactNumber(Long contactNumber) {
-		this.contactNumber = contactNumber;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public int getPointsGained() {
-		return pointsGained;
-	}
-
-	public void setPointsGained(int pointsGained) {
-		this.pointsGained = pointsGained;
-	}
-
-	public Set<Offer> getOffers() {
-		return offers;
-	}
-
-	public void setOffers(Set<Offer> offers) {
-		this.offers = offers;
-	}
-
-	public Set<Offer> getEngagedInOffers() {
-		return engagedInOffers;
-	}
-
-	public void setEngagedInOffers(Set<Offer> engagedInOffers) {
-		this.engagedInOffers = engagedInOffers;
-	}
-
-	public Set<Offer> getLikedOffers() {
-		return likedOffers;
-	}
-
-	public void setLikedOffers(Set<Offer> likedOffers) {
-		this.likedOffers = likedOffers;
-	}
-
+	//customized toString
 	@Override
 	public String toString() {
 		return "Employee [id=" + id + ", name=" + name + ", department=" + department + ", gender=" + gender + ", age="

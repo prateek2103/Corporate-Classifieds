@@ -36,7 +36,7 @@ public class UserControllerTest {
 
 	@Mock
 	UserRepository userRepository;
-
+	
 	@Test
 	public void loginTest()
 	{
@@ -53,14 +53,6 @@ public class UserControllerTest {
 		ResponseEntity<AuthResponse> response = new ResponseEntity<>(auth,HttpStatus.OK);
 		when(userServiceImpl.getValidity("bearer token")).thenReturn(auth);
 		assertEquals(userController.getValidity("bearer token"),response);
-	}
-	
-	@Test
-	public void getEmpIdTest()
-	{
-		UserModel user=new UserModel(1,"admin","admin");
-		when(userServiceImpl.getEmpId("admin")).thenReturn(user.getEmpid());
-		assertEquals(userController.getEmpId("admin"),1);
 	}
 	
 }

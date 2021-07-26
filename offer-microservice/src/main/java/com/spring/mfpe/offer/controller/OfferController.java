@@ -45,15 +45,12 @@ public class OfferController {
 			throws OfferNotFoundException, InvalidTokenException, MicroserviceException {
 
 		log.debug("inside getOfferDetails method of offer microservice");
-		// after authentication return the offer details
 		Offer offer = offerService.getOfferDetails(token, offerId);
-
 		return offer;
 	}
 
 	/**
 	 * returns offer filtered by category
-	 * 
 	 * @param category
 	 * @return
 	 * @throws OfferNotFoundException
@@ -70,7 +67,6 @@ public class OfferController {
 
 	/**
 	 * returns top 3 offers filtered by likes
-	 * 
 	 * @return
 	 * @throws OfferNotFoundException
 	 * @throws MicroserviceException
@@ -81,13 +77,11 @@ public class OfferController {
 			throws OfferNotFoundException, InvalidTokenException, MicroserviceException {
 		log.debug("inside getOFferByTopLikes method of offer microservice");
 		List<Offer> offers = offerService.getOfferByTopLikes(token);
-
 		return offers;
 	}
 
 	/**
 	 * return offers filtered by posted date
-	 * 
 	 * @param postedDate
 	 * @return
 	 * @throws OfferNotFoundException
@@ -101,13 +95,11 @@ public class OfferController {
 			throws OfferNotFoundException, ImproperDateException, InvalidTokenException, MicroserviceException {
 		log.debug("inside getOfferByPostedDate method of offer microservice");
 		List<Offer> offers = offerService.getOfferByPostedDate(token, postedDate);
-
 		return offers;
 	}
 
 	/**
 	 * engage a buyer with the offer
-	 * 
 	 * @param offerId
 	 * @param employeeId
 	 * @return
@@ -124,13 +116,11 @@ public class OfferController {
 			MicroserviceException, InvalidTokenException {
 		log.debug("inside engage offer method of offer microservice");
 		SuccessResponse status = offerService.engageOffer(token, offerId, employeeId);
-
 		return status;
 	}
 
 	/**
 	 * update the existing offer
-	 * 
 	 * @param offer
 	 * @return
 	 * @throws OfferNotFoundException
@@ -142,13 +132,11 @@ public class OfferController {
 			throws OfferNotFoundException, InvalidTokenException, MicroserviceException {
 		log.debug("inside editOffer method of offer microservice");
 		SuccessResponse status = offerService.editOffer(token, offer);
-
 		return status;
 	}
 
 	/**
 	 * add a new offer
-	 * 
 	 * @param offer
 	 * @return
 	 * @throws EmployeeNotFoundException
@@ -160,13 +148,11 @@ public class OfferController {
 			throws EmployeeNotFoundException, InvalidTokenException, MicroserviceException {
 		log.debug("inside addOffer method of offer microservice");
 		SuccessResponse status = offerService.addOffer(token, offer);
-
 		return status;
 	}
 
 	/**
-	 * returns the list of offers for a particular employee id
-	 * 
+	 * returns the list of offers for a particular employee id (helper function for employee microservice)
 	 * @param emp_id
 	 * @return
 	 * @throws OfferNotFoundException
@@ -178,12 +164,11 @@ public class OfferController {
 			throws OfferNotFoundException, InvalidTokenException, MicroserviceException {
 		log.debug("inside getOffersById method of offer microservice");
 		List<Offer> offers = offerService.getOffersById(token, emp_id);
-
 		return offers;
 	}
 	
 	/**
-	 * retrieve points gained by an employee
+	 * retrieve points gained by an employee(helper function for points microservice)
 	 * @param token
 	 * @param emp_id
 	 * @return

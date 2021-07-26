@@ -17,7 +17,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.cts.authmicroservice.service.UserServiceImpl;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Component
+@Slf4j
 public class JwtRequestFilter extends OncePerRequestFilter {
 
 	@Autowired
@@ -38,10 +41,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			try {
 				username = jwtUtil.extractUsername(jwt);
 			} catch (Exception e) {
-
+				log.error(e.getMessage());
 			}
 
 		}
+		
+		
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
 			UserDetails userDetails = this.userService.loadUserByUsername(username);

@@ -1,5 +1,6 @@
 package com.spring.mfpe.offer.exceptions;
 
+//thrown when user passes improper date
 public class ImproperDateException extends Exception {
 
 	/**

@@ -5,16 +5,17 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.cts.pointsmicroservice.client.AuthClient;
+import com.cts.pointsmicroservice.client.EmployeeClient;
 import com.cts.pointsmicroservice.client.OfferClient;
 import com.cts.pointsmicroservice.exception.InvalidUserException;
 import com.cts.pointsmicroservice.exception.MicroserviceException;
 import com.cts.pointsmicroservice.model.AuthResponse;
 import com.cts.pointsmicroservice.model.MessageResponse;
 import com.cts.pointsmicroservice.model.Offer;
-import com.cts.pointsmicroservice.repository.PointsRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,11 +30,11 @@ public class PointsServiceImpl implements PointsService {
 	OfferClient offerClient;
 
 	@Autowired
-	PointsRepository pointsRepository;
-
-	@Autowired
 	MessageResponse messageResponse;
 
+	@Autowired
+	EmployeeClient employeeClient;
+	
 	// retrieve the points gained by an employee
 	@Override
 	public Integer getPoints(String token, int id) throws MicroserviceException, InvalidUserException {
@@ -65,6 +66,7 @@ public class PointsServiceImpl implements PointsService {
 		}
 	}
 
+	//refresh the points for an employee
 	@Override
 	public MessageResponse refreshPoints(String token, int id) throws MicroserviceException, InvalidUserException {
 		log.info("Inside refreshpoints");
@@ -117,7 +119,8 @@ public class PointsServiceImpl implements PointsService {
 
 			// save the new points for the employee
 			try{
-//				empClient.savePoints(points);
+				ResponseEntity<MessageResponse> response = employeeClient.savePoints(token,points);
+				log.info(response.toString());
 			}catch(Exception e) {
 				throw new MicroserviceException(e.getMessage());
 			}

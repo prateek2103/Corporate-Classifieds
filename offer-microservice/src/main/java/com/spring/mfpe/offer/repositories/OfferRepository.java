@@ -9,7 +9,9 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.spring.mfpe.offer.entities.Offer;
 
+//to access offer repository
 public interface OfferRepository extends CrudRepository<Offer, Integer> {
+	
 	//filter by category
 	public List<Offer> findByCategory(String category);
 

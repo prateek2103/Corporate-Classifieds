@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.spring.mfpe.offer.model.ErrorResponse;
 
+//global exception handler for all the generated exceptions
 @ControllerAdvice
 public class GlobalExceptionHandler {
 

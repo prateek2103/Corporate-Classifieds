@@ -18,10 +18,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class OfferMicroserviceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(OfferMicroserviceApplication.class, args);
 		log.info("inside offer microservice");
+		SpringApplication.run(OfferMicroserviceApplication.class, args);
 	}
 	
+	//swagger configuration
 	@Bean
 	   public Docket productApi() {
 	      return new Docket(DocumentationType.SWAGGER_2).select()

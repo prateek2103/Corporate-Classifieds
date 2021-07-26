@@ -1,5 +1,6 @@
 package com.spring.mfpe.offer.exceptions;
 
+//thrown when invalid jwt token is passed 
 public class InvalidTokenException extends RuntimeException{
 
 	/**

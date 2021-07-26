@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.cts.pointsmicroservice.model.Offer;
 
+//to connect to offer microservice
 @FeignClient(url = "${offer.feign.client}", name = "${offer.feign.name}")
 public interface OfferClient {
 

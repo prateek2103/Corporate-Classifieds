@@ -19,8 +19,13 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name="Offer")
+@Getter
+@Setter
 public class Offer {
 
 	@Id
@@ -74,96 +79,8 @@ public class Offer {
 	
 	//no of likes on an offer
 	private int likes;
-
-	//getters and setters
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
-	public Date getOpenDate() {
-		return openDate;
-	}
-
-	public void setOpenDate(Date openDate) {
-		this.openDate = openDate;
-	}
-
-	public Date getEngagedDate() {
-		return engagedDate;
-	}
-
-	public void setEngagedDate(Date engagedDate) {
-		this.engagedDate = engagedDate;
-	}
-
-	public Date getClosedDate() {
-		return closedDate;
-	}
-
-	public void setClosedDate(Date closedDate) {
-		this.closedDate = closedDate;
-	}
-
-	public Employee getEmp() {
-		return emp;
-	}
-
-	public void setEmp(Employee emp) {
-		this.emp = emp;
-	}
-
-	public Employee getEngagedEmp() {
-		return engagedEmp;
-	}
-
-	public void setEngagedEmp(Employee engagedEmp) {
-		this.engagedEmp = engagedEmp;
-	}
-
-	public Set<Employee> getLikedByEmployees() {
-		return likedByEmployees;
-	}
-
-	public void setLikedByEmployees(Set<Employee> likedByEmployees) {
-		this.likedByEmployees = likedByEmployees;
-	}
-
-	public int getLikes() {
-		return likes;
-	}
-
-	public void setLikes(int likes) {
-		this.likes = likes;
-	}
-
+	
+	//customized toString method
 	@Override
 	public String toString() {
 		return "Offer [id=" + id + ", name=" + name + ", description=" + description + ", category=" + category

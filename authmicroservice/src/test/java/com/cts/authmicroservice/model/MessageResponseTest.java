@@ -5,13 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Date;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 
 public class MessageResponseTest {
 	
 	MessageResponse messageResponse = new MessageResponse();
-	MessageResponse msgResponse = new MessageResponse(new Date(),"abc","abc");
-	MessageResponse msgRes = new MessageResponse("abc","abc");
-	Date date=new Date();
+	MessageResponse msgResponse = new MessageResponse(new Date(),"abc",HttpStatus.OK);
+	MessageResponse msgRes = new MessageResponse("abc",HttpStatus.OK);
+	Date date = new Date();
 	
 	@Test
 	void testMessage() {
@@ -21,8 +22,8 @@ public class MessageResponseTest {
 	
 	@Test
 	void testStatus() {
-		messageResponse.setMessage("abc");
-		assertEquals(messageResponse.getMessage(), "abc");
+		messageResponse.setStatus(HttpStatus.OK);
+		assertEquals(messageResponse.getMessage(), HttpStatus.OK);
 	}
 	
 	@Test

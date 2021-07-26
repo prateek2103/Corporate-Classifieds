@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+//return as the response for a token authentication
 @Getter
 @Setter
 @ToString

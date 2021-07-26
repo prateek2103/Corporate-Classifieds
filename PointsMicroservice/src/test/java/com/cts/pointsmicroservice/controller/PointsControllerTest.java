@@ -5,8 +5,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -26,9 +26,7 @@ import com.cts.pointsmicroservice.client.AuthClient;
 import com.cts.pointsmicroservice.client.OfferClient;
 import com.cts.pointsmicroservice.model.AuthResponse;
 import com.cts.pointsmicroservice.model.Offer;
-import com.cts.pointsmicroservice.model.Points;
 import com.cts.pointsmicroservice.service.PointsService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -59,21 +57,20 @@ public class PointsControllerTest {
 		assertEquals(200, actualValue);
 		}
 
-//	@Test
-//	public void refreshPoints() throws Exception {
-//		List<Offer> offer = Arrays.asList(new Offer(1, "name", LocalDate.now(), LocalDate.now(), 1, 5));
-//		ResponseEntity<AuthResponse> response = new ResponseEntity<>(new AuthResponse(1, "ram", true), HttpStatus.OK);
-//		Points points = new Points(1, 1, 1, 1);
-//		ResponseEntity<List<Offer>> offerResponse = new ResponseEntity<>(offer, HttpStatus.OK);
-//		String token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqZXlhIiwiZXhwIjoxNjA3Nzc0MTI3LCJpYXQiOjE2MDc3NzMyMjd9.nBr3qDGV2txIfx_Z-U-CjZalODWV7HqWjPYRly_oYMk";
-//		when(authClient.verifyToken(token)).thenReturn(response);
-//		when(offerClient.getOfferByEmpId(token, 1)).thenReturn(offerResponse);
-//		MvcResult mvcResult = mvc
-//				.perform(post("/refreshpointsbyemp/{id}", 1).header("Authorization", token)
-//						.content(new ObjectMapper().writeValueAsString(points)).contentType(MediaType.APPLICATION_JSON))
-//				.andReturn();
-//		int actualValue = mvcResult.getResponse().getStatus();
-//		assertEquals(200, actualValue);
-//		}
+	@Test
+	public void refreshPoints() throws Exception {
+		List<Offer> offer = Arrays.asList(new Offer(1, "name", "offer description", "category",new Date(), null,null, 100));
+		ResponseEntity<AuthResponse> response = new ResponseEntity<>(new AuthResponse(1, "ram", true), HttpStatus.OK);
+		ResponseEntity<List<Offer>> offerResponse = new ResponseEntity<>(offer, HttpStatus.OK);
+		String token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqZXlhIiwiZXhwIjoxNjA3Nzc0MTI3LCJpYXQiOjE2MDc3NzMyMjd9.nBr3qDGV2txIfx_Z-U-CjZalODWV7HqWjPYRly_oYMk";
+		when(authClient.verifyToken(token)).thenReturn(response);
+		when(offerClient.getOfferByEmpId(token, 1)).thenReturn((List<Offer>) offerResponse);
+		MvcResult mvcResult = mvc
+				.perform(post("/refreshpointsbyemp/{id}", 1).header("Authorization", token)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andReturn();
+		int actualValue = mvcResult.getResponse().getStatus();
+		assertEquals(200, actualValue);
+		}
 
 }

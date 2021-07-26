@@ -1,5 +1,6 @@
 package com.spring.mfpe.offer.exceptions;
 
+//thrown when the offer is already engaged
 public class OfferAlreadyEngagedException extends Exception {
 
 	/**

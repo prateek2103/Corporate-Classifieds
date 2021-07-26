@@ -1,7 +1,5 @@
 package com.cts.authmicroservice.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,54 +19,45 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
-
 public class UserController {
 
 	@Autowired
 	UserServiceImpl userServiceImpl;
 
-	/**Checks if the userName and the password entered by the employee
-	 * is correct or not.If it is correct,the it creates the authorization 
-	 * token with the userName,employeeId and it returns the token.If the 
-	 * entered userName or password is incorrect,then it throws 
-	 * UnauthorizedException
-	 * 
+	/**
+	 * authenticates the user
 	 * @param userModel
 	 * @return userToken
 	 * @throws UnauthorizedException
 	 */
 	@PostMapping("/login")
-	public ResponseEntity<UserToken> login(@RequestBody UserModel userModel) {
-		// gets login details, sends it to service class & return login credentials
+	public ResponseEntity<UserToken> login(@RequestBody UserModel user) {
 		log.info("Inside Login : ");
-		return new ResponseEntity<UserToken>(userServiceImpl.login(userModel), HttpStatus.OK);
+		return new ResponseEntity<UserToken>(userServiceImpl.login(user), HttpStatus.OK);
 	}
+	
 
-	/**Checks if the token entered by the user is valid or not.
-	 * If valid,then it sets the validity as true else it sets 
-	 * the validity of the token as false and returns it.
-	 * If the token is invalid,then it states that the token in invalid
-	 * 
+	/**
+	 * checks for the validity of the JWT Token
 	 * @param token
 	 * @return authResponse
 	 */
 	@GetMapping("/validate")
 	public ResponseEntity<AuthResponse> getValidity(@RequestHeader("Authorization") String token) {
-		// gets authorization token & checks for validity
-		log.info("Inside Token Validation ");
+		log.info("Inside Token Validation... ");
 		return new ResponseEntity<AuthResponse>(userServiceImpl.getValidity(token), HttpStatus.OK);
 	}
 
-	/**It returns the employee id of the user who has logged in.
-	 * It is sent along with the token for future uses.
-	 * 
-	 * @param userName
-	 * @return employeeId(integer)
-	 */
-	@GetMapping("/getempid")
-	public int getEmpId(String username) {
-		log.info("Inside get employee id");
-		return userServiceImpl.getEmpId(username);
-	}
+//	/**It returns the employee id of the user who has logged in.
+//	 * It is sent along with the token for future uses.
+//	 * 
+//	 * @param userName
+//	 * @return employeeId(integer)
+//	 */
+//	@GetMapping("/getempid")
+//	public int getEmpId(String username) {
+//		log.info("Inside get employee id");
+//		return userServiceImpl.getEmpId(username);
+//	}
 
 }

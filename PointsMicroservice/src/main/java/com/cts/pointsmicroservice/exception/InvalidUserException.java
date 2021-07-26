@@ -1,5 +1,6 @@
 package com.cts.pointsmicroservice.exception;
 
+//thrown in case of invalid credentials
 public class InvalidUserException extends RuntimeException{
 	
 	/**

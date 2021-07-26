@@ -22,10 +22,8 @@ public class PointsController {
 	@Autowired
 	PointsService pointsService;
 
-	/**Checks the validity of the token.If not valid,it throws InvalidUserException.
-	 * If the token is valid,it gets the offer list of that particular employee
-	 * through the offer client and returns it.
-	 * 
+	/**
+	 * get points gained by a particular employee by employee id
 	 * @param token
 	 * @param employeeId
 	 * @return Points
@@ -35,17 +33,15 @@ public class PointsController {
 	@GetMapping("/getpointsbyemp/{id}")
 	public ResponseEntity<Integer> getPointsByEmpId(@RequestHeader(name = "Authorization") String token,
 			@PathVariable("id") int id) throws MicroserviceException {
-		log.info("Inside getpointsbyemployeeid");
+		log.info("Inside getpointsbyemployeeid of points microservice");
 		return new ResponseEntity<>(pointsService.getPoints(token, id), HttpStatus.OK);
 	}
 
-	/**Checks the validity of the token.If not valid,it throws InvalidUserException.
-	 * If the token is valid,it gets the offer list of that particular employee
-	 * through the offer client and returns it.
-	 * 
-	 * if the employee posted an offer and it has 50 likes within 2 days that employee get 10 points
-	 * if the employee posted an offer and it has 100 likes within 2 days that employee get 50 points
-	 * 
+	/**
+	 * update the employee's points gained
+	 * if the employee posted an offer and it has 50 likes within 2 days that employee gets 10 points
+	 * if the employee posted an offer and it has 100 likes within 2 days that employee gets 50 points
+	 * if the employee posted and offer and it engaged within 2 days that employee gets 100 points
 	 * @param token
 	 * @param employeeId
 	 * @return Points
@@ -55,7 +51,7 @@ public class PointsController {
 	@PostMapping("/refreshpointsbyemp/{id}")
 	public ResponseEntity<?> refreshPointsByEmpId(@RequestHeader(name = "Authorization") String token,
 			@PathVariable("id") int id) throws InvalidUserException, MicroserviceException {
-		log.info("Inside refreshpoints");
+		log.info("Inside refreshpoints of points microservice");
 		return new ResponseEntity<>(pointsService.refreshPoints(token, id),HttpStatus.OK);
 	}
 

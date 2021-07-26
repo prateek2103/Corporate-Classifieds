@@ -1,5 +1,6 @@
 package com.cts.authmicroservice.exception;
 
+//thrown when the user is unauthorized
 public class UnauthorizedException extends RuntimeException {
 	/**
 	 * 

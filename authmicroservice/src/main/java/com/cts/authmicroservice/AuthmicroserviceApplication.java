@@ -20,6 +20,7 @@ public class AuthmicroserviceApplication {
 		SpringApplication.run(AuthmicroserviceApplication.class, args);
 	}
 	
+	//swagger configuration
 	@Bean
 	   public Docket productApi() {
 	      return new Docket(DocumentationType.SWAGGER_2).select()

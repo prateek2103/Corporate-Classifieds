@@ -1,5 +1,6 @@
 package com.spring.mfpe.offer.exceptions;
 
+//thrown when an employee for a particular id does not exist
 public class EmployeeNotFoundException extends Exception {
 
 	/**

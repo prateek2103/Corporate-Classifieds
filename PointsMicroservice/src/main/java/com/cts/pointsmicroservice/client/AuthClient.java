@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.cts.pointsmicroservice.model.AuthResponse;
 
+//to connect to authentication microservice
 @FeignClient(url = "${auth.feign.client}", name = "${auth.feign.name}")
 public interface AuthClient {
 	@RequestMapping(path = "/validate", method = RequestMethod.GET)

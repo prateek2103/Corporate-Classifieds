@@ -19,32 +19,22 @@ import com.cts.pointsmicroservice.model.MessageResponse;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 
+//global exception handler for all the exceptions
 @Slf4j
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
+
 public class PointsExceptionHandler extends ResponseEntityExceptionHandler {
 
-
-	/**Checks the value of the object.If it is null,it throws NullPointerException.
-	 * It throws the exception with the message details of employee not found
-	 * through the response entity along with the timeStamp and httpStatus
-	 * 
-	 * @param NullPointerException
-	 * @return ResponseEntity<MessageResponse>
-	 */
+	//handles null pointer exception
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(NullPointerException.class)
 	public ResponseEntity<?> handleUserNotFoundException(NullPointerException ce) {
 		log.error("Bad request:Employee Details not found");
 		return ResponseEntity.badRequest().body(new MessageResponse(new Date(), "Employee Details not Found", HttpStatus.UNAUTHORIZED));
-
 	}
 
-	/**Checks the value of the authorization token entered by the user.
-	 * If any characters are missing in the token,then it throws 
-	 * StringOutOfBoundsException with the message not a valid token
-	 * through the response entity along with the timeStamp and httpStatus
-	 * 
+	/**validity of tokenn
 	 * @param StringOutOfBoundsException
 	 * @return ResponseEntity<MessageResponse>
 	 */
@@ -56,15 +46,10 @@ public class PointsExceptionHandler extends ResponseEntityExceptionHandler {
 
 	}
 
-	/**Checks if all the feign servers required for the particular microService is running or not.
-	 * If any one microService is down and running ,then it throws 
-	 * FeignException with the message service unavailable
-	 * through the response entity along with the timeStamp and httpStatus
-	 * 
+	/**checks for feign servers availability
 	 * @param FeignException
 	 * @return ResponseEntity<MessageResponse>
 	 */
-
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(FeignException.class)
 	public ResponseEntity<?> handleFeignException(FeignException fe) {
@@ -77,7 +62,6 @@ public class PointsExceptionHandler extends ResponseEntityExceptionHandler {
 	 * If the requested value is not present in the database,then it throws 
 	 * EmptyResultDataAccessException with the message id not existing
 	 * through the response entity along with the timeStamp and httpStatus
-	 * 
 	 * @param EmptyResultDataAccessException
 	 * @return ResponseEntity<MessageResponse>
 	 */
@@ -110,7 +94,6 @@ public class PointsExceptionHandler extends ResponseEntityExceptionHandler {
 	 * is not running,then it throws ConnectException with
 	 * the message id not existing through the response entity along with
 	 * the timeStamp and httpStatus
-	 * 
 	 * @param ConnectException
 	 * @return ResponseEntity<MessageResponse>
 	 */
@@ -122,10 +105,7 @@ public class PointsExceptionHandler extends ResponseEntityExceptionHandler {
 
 	}
 	
-	/**Checks the entered user token.If the token is not valid
-	 * it throws InvalidUserException with the message InvalidUser
-	 * through the response entity along with the timeStamp and httpStatus
-	 * 
+	/**invalid user exception handler
 	 * @param InvalidUserException
 	 * @return ResponseEntity<MessageResponse>
 	 */
@@ -136,10 +116,11 @@ public class PointsExceptionHandler extends ResponseEntityExceptionHandler {
 
 	}
 	
+	//handles any microservice error
 	@ExceptionHandler(MicroserviceException.class)
 	public ResponseEntity<MessageResponse> handleMicorserviceError(MicroserviceException ex){
 		log.error("microservice error");
-		return new ResponseEntity(new MessageResponse(new Date(),ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR),HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<MessageResponse>(new MessageResponse(new Date(),ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR),HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }

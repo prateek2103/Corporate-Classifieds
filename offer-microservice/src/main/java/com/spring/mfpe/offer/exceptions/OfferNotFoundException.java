@@ -1,5 +1,6 @@
 package com.spring.mfpe.offer.exceptions;
 
+//thrown when an offer is not found
 public class OfferNotFoundException extends Exception {
 
 	/**

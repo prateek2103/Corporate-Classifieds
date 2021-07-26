@@ -2,6 +2,8 @@ package com.cts.authmicroservice.model;
 
 import java.util.Date;
 
+import org.springframework.http.HttpStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,12 +17,12 @@ public class MessageResponse {
 
 	Date timeStamp;
 	String message;
-	String status;
+	HttpStatus status;
 	
-	public MessageResponse(String message, String string) {
+	public MessageResponse(String message, HttpStatus status) {
 		super();
 		this.message = message;
 		this.timeStamp=new Date();
-		this.status=string;
+		this.status=status;
 	}
 	}

@@ -1,5 +1,6 @@
 package com.spring.mfpe.offer.exceptions;
 
+//thrown when there is an error in a different microservice
 public class MicroserviceException extends Exception {
 	
 	/**

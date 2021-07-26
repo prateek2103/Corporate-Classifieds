@@ -11,9 +11,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.spring.mfpe.offer.clients.AuthClient;
+import com.spring.mfpe.offer.clients.EmployeeClient;
 import com.spring.mfpe.offer.entities.Employee;
 import com.spring.mfpe.offer.entities.Offer;
 import com.spring.mfpe.offer.exceptions.EmployeeNotFoundException;
@@ -45,6 +45,9 @@ public class OfferService {
 	@Autowired
 	AuthClient authClient;
 
+	@Autowired
+	EmployeeClient employeeClient;
+
 	/**
 	 * service that returns offer details for a specific offerId
 	 * 
@@ -75,6 +78,7 @@ public class OfferService {
 
 			return offer.get();
 		}
+
 		// if token is invalid
 		else {
 			throw new InvalidTokenException("token is invalid");
@@ -108,9 +112,8 @@ public class OfferService {
 				throw new OfferNotFoundException("no offers found");
 			}
 			return offers;
-		}
-		// if token in invalid or expired
-		else {
+		} else {
+			log.info("invalid or expired token");
 			throw new InvalidTokenException("token in invalid");
 		}
 	}
@@ -124,6 +127,7 @@ public class OfferService {
 	 */
 	public List<Offer> getOfferByTopLikes(String token)
 			throws OfferNotFoundException, MicroserviceException, InvalidTokenException {
+
 		// authenticate the user
 		ResponseEntity<AuthResponse> response;
 		try {
@@ -141,9 +145,8 @@ public class OfferService {
 				throw new OfferNotFoundException("no offers found");
 			}
 			return offers;
-		}
-		// if token is invalid or expired
-		else {
+		} else {
+			log.info("invalid or expired token");
 			throw new InvalidTokenException("token is invalid");
 		}
 	}
@@ -173,7 +176,7 @@ public class OfferService {
 
 		// check if token is valid
 		if (response.getBody().isValid()) {
-			// if the user passes improper date
+			// if the user passes improper date (proper format yyyy-mm-dd)
 			try {
 				currentDate = LocalDate.parse(date);
 			} catch (Exception e) {
@@ -184,13 +187,16 @@ public class OfferService {
 			int year = currentDate.getYear();
 			int day = currentDate.getDayOfMonth();
 
+			// retrieve the offers
 			List<Offer> offers = offerRepository.getByPostedDate(month, year, day);
 
+			// if empty
 			if (offers.size() == 0)
 				throw new OfferNotFoundException("no offers found");
 
 			return offers;
 		} else {
+			log.info("token invalid or expired");
 			throw new InvalidTokenException("token is invalid");
 		}
 	}
@@ -251,11 +257,11 @@ public class OfferService {
 
 			// if the offer is available
 			else {
-				Optional<Employee> employee = employeeRepository.findById(employeeId);
-
-				// if employee is not present
-				if (!employee.isPresent()) {
-					throw new EmployeeNotFoundException("employee not found");
+				Employee employee;
+				try {
+					employee = employeeClient.getEmployee(token, employeeId);
+				} catch (Exception e) {
+					throw new MicroserviceException(e.getMessage());
 				}
 
 				// check if offer belongs to the same employee
@@ -268,7 +274,7 @@ public class OfferService {
 
 				// else set the engaged employee id and the engagedDate
 				Offer offer_real = offer.get();
-				offer_real.setEngagedEmp(employee.get());
+				offer_real.setEngagedEmp(employee);
 				offer_real.setEngagedDate(new Date());
 				offerRepository.save(offer_real);
 
@@ -276,10 +282,10 @@ public class OfferService {
 				successResponse.setMessage("engaged in the offer successfully");
 				successResponse.setStatus(HttpStatus.CREATED);
 				successResponse.setTimestamp(new Date());
-
 				return successResponse;
 			}
 		} else {
+			log.info("invalid or expired token");
 			throw new InvalidTokenException("token is invalid");
 		}
 	}
@@ -296,6 +302,7 @@ public class OfferService {
 			throws OfferNotFoundException, MicroserviceException, InvalidTokenException {
 
 		ResponseEntity<AuthResponse> response;
+
 		// authenticate the user
 		try {
 			response = authClient.verifyToken(token);
@@ -327,15 +334,16 @@ public class OfferService {
 			successResponse.setMessage("offer updated successfully");
 			successResponse.setStatus(HttpStatus.OK);
 			successResponse.setTimestamp(new Date());
-
 			return successResponse;
+
 		} else {
+			log.info("invalid or expired token");
 			throw new InvalidTokenException("token is invalid");
 		}
 	}
 
 	/**
-	 * service to add a new offer
+	 * service to add a new offers
 	 * 
 	 * @param offer
 	 * @return
@@ -344,8 +352,9 @@ public class OfferService {
 	 */
 	public SuccessResponse addOffer(String token, Offer offer)
 			throws EmployeeNotFoundException, MicroserviceException, InvalidTokenException {
-		// get the employee details from the auth token
+
 		ResponseEntity<AuthResponse> response;
+
 		// authenticate the user
 		try {
 			response = authClient.verifyToken(token);
@@ -358,23 +367,25 @@ public class OfferService {
 		if (response.getBody().isValid()) {
 
 			int empId = response.getBody().getEmpid(); // demo
+			Employee emp;
 
-			Optional<Employee> emp = employeeRepository.findById(empId);
-
-			if (!emp.isPresent()) {
-				throw new EmployeeNotFoundException("employee not found");
+			// retrieve the employee
+			try {
+				emp = employeeClient.getEmployee(token, empId);
+			} catch (Exception e) {
+				throw new MicroserviceException(e.getMessage());
 			}
 
-			offer.setEmp(emp.get());
+			offer.setEmp(emp);
 			offer.setOpenDate(new Date());
 
 			offerRepository.save(offer);
 			successResponse.setMessage("successfully added offer");
 			successResponse.setStatus(HttpStatus.CREATED);
 			successResponse.setTimestamp(new Date());
-
 			return successResponse;
 		} else {
+			log.info("invalid or expired token");
 			throw new InvalidTokenException("token is invalid");
 		}
 	}
@@ -387,7 +398,8 @@ public class OfferService {
 	 * @throws OfferNotFoundException
 	 * @throws MicroserviceException
 	 */
-	public List<Offer> getOffersById(String token, int emp_id) throws OfferNotFoundException, MicroserviceException,InvalidTokenException {
+	public List<Offer> getOffersById(String token, int emp_id)
+			throws OfferNotFoundException, MicroserviceException, InvalidTokenException {
 		ResponseEntity<AuthResponse> response;
 
 		// authenticate the user
@@ -400,7 +412,7 @@ public class OfferService {
 
 		// check if token is valid
 		if (response.getBody().isValid()) {
-			
+
 			// verify the employee
 			if (response.getBody().getEmpid() != emp_id) {
 				throw new InvalidTokenException("token is invalid for the current user");
@@ -413,13 +425,21 @@ public class OfferService {
 				throw new OfferNotFoundException("no offers found");
 			}
 			return offers;
-		} 
-		else {
+		} else {
+			log.info("expired or invalid token");
 			throw new InvalidTokenException("token is invalid");
 		}
 	}
 
-	public int getPointsById(String token, int emp_id) throws MicroserviceException,InvalidTokenException {
+	/**
+	 * retrieve points for a particular id
+	 * @param token
+	 * @param emp_id
+	 * @return
+	 * @throws MicroserviceException
+	 * @throws InvalidTokenException
+	 */
+	public int getPointsById(String token, int emp_id) throws MicroserviceException, InvalidTokenException {
 		ResponseEntity<AuthResponse> response;
 
 		// authenticate the user
@@ -432,15 +452,22 @@ public class OfferService {
 
 		// check if token is valid
 		if (response.getBody().isValid()) {
-			
-			//verify the user
-			if(response.getBody().getEmpid()!=emp_id) {
+
+			// verify the user
+			if (response.getBody().getEmpid() != emp_id) {
 				throw new InvalidTokenException("token is invalid for user");
 			}
+			// return user points
+			Employee emp;
+			try{
+				emp = employeeClient.getEmployee(token,emp_id);
+			}catch(Exception e){
+				throw new MicroserviceException(e.getMessage());
+			}
 			
-			//return user points
-			return employeeRepository.findById(emp_id).get().getPointsGained();
-		}else {
+			return emp.getPointsGained();
+		} 
+		else {
 			throw new InvalidTokenException("token is invalid or expired");
 		}
 	}

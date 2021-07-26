@@ -14,51 +14,41 @@ import com.cts.authmicroservice.model.MessageResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 
+//global exception handler
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class RestExceptionHandler {
 
-	/**Checks the entered user name and password.If the user name 
-	 * or password does not match with the present in the database
-	 * it throws UnauthorizedException with the message Unauthorized request
-	 * through the response entity along with the timeStamp and httpStatus
-	 * 
+	/**
+	 * to handle unauthorized exception
 	 * @param UnauthorizedException
 	 * @return ResponseEntity<MessageResponse>
 	 */
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	@ExceptionHandler(UnauthorizedException.class)
 	public ResponseEntity<?> handleUnauthorizedExceptions(UnauthorizedException ex) {
-		log.error("Unauthorized request");
+		log.error("Unauthorized request...");
 		return ResponseEntity.badRequest()
-				.body(new MessageResponse("Unauthorized request. Login again...", "Unauthorized"));
+				.body(new MessageResponse("Unauthorized request. Login again...", HttpStatus.UNAUTHORIZED));
 	}
 
-	/**Checks header of the request that the user enters.
-	 * If authorization header is missing,then it throws
-	 * it throws MissingRequestHeaderException with the message 
-	 * required token for the request to take place
-	 * through the response entity along with the timeStamp and httpStatus
-	 * 
+	
+	/**
+	 * handles exception when authorization token is missing
 	 * @param MissingRequestHeaderException
 	 * @return ResponseEntity<MessageResponse>
 	 */
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MissingRequestHeaderException.class)
 	public ResponseEntity<?> handleMissingRequestHeaderException(MissingRequestHeaderException ex) {
-
-		log.error("Required Bearer token");
-		return ResponseEntity.badRequest().body(new MessageResponse("Required Bearer token", "Bad Request"));
+		log.error("Required Bearer token....");
+		return ResponseEntity.badRequest().body(new MessageResponse("Required Bearer token", HttpStatus.BAD_REQUEST));
 	}
 
+	
 	/**Checks header of the request that the user enters.
-	 * If authorization header is present,then it takes the token
-	 * and checks the validity of the token.If the token has 
-	 * expired, then it throws the expiredJwtException with the message 
-	 * the token has expired through the response entity along with
-	 *  the timeStamp and httpStatus
-	 * 
+	 * handles expires JWT token
 	 * @param ExpiredJwtExceptionException
 	 * @return ResponseEntity<MessageResponse>
 	 */
@@ -67,7 +57,6 @@ public class RestExceptionHandler {
 	public ResponseEntity<?> handleExpiredJwtException(ExpiredJwtException ex) {
 
 		log.error("Token has expired");
-		return ResponseEntity.badRequest().body(new MessageResponse("Token has expired", "Bad Request"));
+		return ResponseEntity.badRequest().body(new MessageResponse("Token has expired", HttpStatus.BAD_REQUEST));
 	}
-
 }

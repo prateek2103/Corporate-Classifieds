@@ -6,10 +6,7 @@ import com.cts.pointsmicroservice.model.MessageResponse;
 
 public interface PointsService {
 
-	/**Checks the validity of the token.If not valid,it throws InvalidUserException.
-	 * If the token is valid,it gets the offer list of that particular employee
-	 * through the offer client and returns it.
-	 * 
+	/**retrieve points for a particular employee
 	 * @param token
 	 * @param employeeId
 	 * @return Points
@@ -17,13 +14,12 @@ public interface PointsService {
 	 */
 	public Integer getPoints(String token, int id) throws MicroserviceException;
 
-	/**Checks the validity of the token.If not valid,it throws InvalidUserException.
-	 * If the token is valid,it gets the offer list of that particular employee
-	 * through the offer client and returns it.
-	 * 
+	
+	/**
+	 * refresh points for a particular employee
 	 * if the employee posted an offer and it has 50 likes within 2 days that employee get 10 points
 	 * if the employee posted an offer and it has 100 likes within 2 days that employee get 50 points
-	 * 
+	 * if the employee posted an offer and it has engaged within 2 days that employee gets 100 points
 	 * @param token
 	 * @param employeeId
 	 * @return Points

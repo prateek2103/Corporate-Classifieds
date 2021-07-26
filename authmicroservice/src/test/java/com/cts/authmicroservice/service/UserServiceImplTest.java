@@ -89,13 +89,5 @@ public class UserServiceImplTest {
 		when(userRepository.findById("admin")).thenReturn(data1);
 		assertThrows(UnauthorizedException.class,()->userServiceImpl.login(new UserModel(1,"admin","abs")));
 	}
-	
-	@Test
-	public void testGetEmpId()
-	{
-		UserModel user = new UserModel(1, "admin", "admin");
-		when(userRepository.findByEmpUsername("admin")).thenReturn(user);
-		int result = userServiceImpl.getEmpId("admin");
-		assertEquals(1, result);
-	}
+
 }
