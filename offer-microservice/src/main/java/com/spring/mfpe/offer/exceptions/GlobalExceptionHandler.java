@@ -55,5 +55,25 @@ public class GlobalExceptionHandler {
 
 		return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.BAD_REQUEST);
 	}
+	
+	//to handle invalid token
+	@ExceptionHandler(InvalidTokenException.class)
+	public ResponseEntity<ErrorResponse> invalidToken(InvalidTokenException ex) {
+		errorResponse.setMessage(ex.getMessage());
+		errorResponse.setStatus(HttpStatus.UNAUTHORIZED);
+		errorResponse.setTimestamp(new Date());
+
+		return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.UNAUTHORIZED);
+	}
+	
+	//to handle microservice error
+	@ExceptionHandler(MicroserviceException.class)
+	public ResponseEntity<ErrorResponse> microserviceError(MicroserviceException ex) {
+		errorResponse.setMessage(ex.getMessage());
+		errorResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+		errorResponse.setTimestamp(new Date());
+
+		return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 
 }
