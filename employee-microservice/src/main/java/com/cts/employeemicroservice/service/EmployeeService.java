@@ -43,5 +43,7 @@ public interface EmployeeService {
 	public Employee viewEmployee(String token,int id) throws MicroserviceException,InvalidUserException;
 
 	public MessageResponse savePoints(String token, int points) throws MicroserviceException, InvalidUserException;
+
+	public MessageResponse likeOffer(String token, int offerId) throws MicroserviceException;
 	
 }

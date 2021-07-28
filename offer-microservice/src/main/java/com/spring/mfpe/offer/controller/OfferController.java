@@ -3,6 +3,7 @@ package com.spring.mfpe.offer.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +41,7 @@ public class OfferController {
 	 * @throws MicroserviceException
 	 * @throws InvalidTokenException
 	 */
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/getOfferDetails/{offerId}")
 	public Offer getOfferDetails(@RequestHeader("Authorization") String token, @PathVariable("offerId") int offerId)
 			throws OfferNotFoundException, InvalidTokenException, MicroserviceException {
@@ -56,6 +58,7 @@ public class OfferController {
 	 * @throws OfferNotFoundException
 	 * @throws MicroserviceException
 	 */
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/getOfferByCategory/{category}")
 	public List<Offer> getOfferByCategory(@RequestHeader("Authorization") String token,
 			@PathVariable("category") String category)
@@ -72,6 +75,7 @@ public class OfferController {
 	 * @throws MicroserviceException
 	 * @throws InvalidTokenException
 	 */
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/getOfferByTopLikes")
 	public List<Offer> getOfferByTopLikes(@RequestHeader("Authorization") String token)
 			throws OfferNotFoundException, InvalidTokenException, MicroserviceException {
@@ -89,6 +93,7 @@ public class OfferController {
 	 * @throws MicroserviceException
 	 * @throws InvalidTokenException
 	 */
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/getOfferByPostedDate/{date}")
 	public List<Offer> getOfferByPostedDate(@RequestHeader("Authorization") String token,
 			@PathVariable("date") String postedDate)
@@ -182,5 +187,20 @@ public class OfferController {
 		log.debug("inside getPointsById method of offer microservice");
 		int points = offerService.getPointsById(token, emp_id);
 		return points;
+	}
+	
+	/**
+	 * update the likes of the offer
+	 * @param token
+	 * @param id
+	 * @return
+	 * @throws OfferNotFoundException 
+	 * @throws MicroserviceException 
+	 */
+	@CrossOrigin(origins="http://localhost:4200")
+	@PostMapping("/updateLikes/{offer_id}")
+	public SuccessResponse updateLikes(@RequestHeader("Authorization") String token , @PathVariable("offer_id") int id) throws MicroserviceException, OfferNotFoundException {
+		log.debug("inside update likes method of offer microservice");
+		return offerService.updateLikes(token,id);
 	}
 }

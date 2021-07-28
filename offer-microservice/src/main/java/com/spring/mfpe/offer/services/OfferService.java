@@ -321,6 +321,11 @@ public class OfferService {
 				throw new OfferNotFoundException("no offer found");
 			}
 
+			// check if the offer belongs to the user
+			if (offer.get().getEmp().getId() != response.getBody().getEmpid()) {
+				throw new InvalidTokenException("user cannot edit this offer");
+			}
+
 			// update the new details
 			Offer offerReal = offer.get();
 			offerReal.setCategory(offerDetails.getCategory());
@@ -433,6 +438,7 @@ public class OfferService {
 
 	/**
 	 * retrieve points for a particular id
+	 * 
 	 * @param token
 	 * @param emp_id
 	 * @return
@@ -459,16 +465,51 @@ public class OfferService {
 			}
 			// return user points
 			Employee emp;
-			try{
-				emp = employeeClient.getEmployee(token,emp_id);
-			}catch(Exception e){
+			try {
+				emp = employeeClient.getEmployee(token, emp_id);
+			} catch (Exception e) {
 				throw new MicroserviceException(e.getMessage());
 			}
-			
+
 			return emp.getPointsGained();
-		} 
-		else {
+		} else {
 			throw new InvalidTokenException("token is invalid or expired");
+		}
+	}
+
+	public SuccessResponse updateLikes(String token, int id) throws MicroserviceException, OfferNotFoundException {
+		ResponseEntity<AuthResponse> response;
+		// authenticate the user
+		try {
+			response = authClient.verifyToken(token);
+		} catch (Exception e) {
+			log.info("some error in auth microservice");
+			throw new MicroserviceException(e.getMessage());
+		}
+
+		// check if token is valid
+		if (response.getBody().isValid()) {
+			Offer offer = offerRepository.findById(id).orElse(null);
+
+			// check if the offer is available
+			if (offer == null) {
+				throw new OfferNotFoundException("offer not found");
+			}
+
+			// update the likes
+			int likes = offer.getLikedByEmployees().size();
+			log.info(""+offer);
+			offer.setLikes(likes);
+
+			// save in the repository
+			offerRepository.save(offer);
+
+			successResponse.setMessage("likes updated successfully");
+			successResponse.setStatus(HttpStatus.OK);
+			successResponse.setTimestamp(new Date());
+			return successResponse;
+		}else {
+			throw new InvalidTokenException("invalid user");
 		}
 	}
 }

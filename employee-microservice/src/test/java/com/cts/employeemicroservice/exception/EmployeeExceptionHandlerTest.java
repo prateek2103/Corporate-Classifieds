@@ -42,7 +42,7 @@ public class EmployeeExceptionHandlerTest {
 	
 	@Test
 	public void handleNoSuchElementExceptionTest() {
-		assertEquals(employeeExceptionHandler.handleNoSuchElementException(new NoSuchElementException(null)).getStatusCodeValue(), 400);
+		assertEquals(employeeExceptionHandler.handleNoSuchElementException(new NoSuchElementException()).getStatusCodeValue(), 400);
 	}
 
 	@Test

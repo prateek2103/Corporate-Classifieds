@@ -3,6 +3,7 @@ package com.cts.employeemicroservice.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,6 +49,7 @@ public class EmployeeController {
 	 * @throws MicroserviceException 
 	 * @throws InvalidUserException
 	 */
+	@CrossOrigin(origins="http://localhost:4200")
 	@GetMapping("/viewProfile/{id}")
 	public ResponseEntity<Employee> viewProfile(@RequestHeader(name = "Authorization", required = true) String token, @PathVariable("id") int id) throws InvalidUserException, MicroserviceException {
 		log.info("Inside view employee profile");
@@ -73,5 +75,11 @@ public class EmployeeController {
 	public ResponseEntity<MessageResponse> savePoints(@RequestHeader("Authorization") String token, @PathVariable("points") int points) throws InvalidUserException, MicroserviceException {
 		log.info("inside save points");
 		return new ResponseEntity<>(employeeService.savePoints(token,points),HttpStatus.OK); 
+	}
+	
+	@CrossOrigin(origins="http://localhost:4200")
+	@PostMapping("/likeOffer/{id}")
+	public MessageResponse likeOffer(@RequestHeader("Authorization") String token, @PathVariable("id") int offerId) throws MicroserviceException {
+		return employeeService.likeOffer(token,offerId);
 	}
 }

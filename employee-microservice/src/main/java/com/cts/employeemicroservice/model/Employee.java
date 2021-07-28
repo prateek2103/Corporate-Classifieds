@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -59,7 +61,14 @@ public class Employee {
 	private Set<EmployeeOffers> engagedInOffers;
 
 	// many employees can like many offers
-	@ManyToMany(mappedBy = "likedByEmployees", fetch = FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.LAZY,cascade=CascadeType.PERSIST)
+	@JoinTable(name="liked_by", 
+		joinColumns = {
+				@JoinColumn(name="emp_id",referencedColumnName="id")
+		},
+		inverseJoinColumns = {
+				@JoinColumn(name="offer_id",referencedColumnName="id")
+		})
 	private Set<EmployeeOffers> likedOffers = new HashSet<>();
 
 	//customized toString

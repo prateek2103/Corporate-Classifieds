@@ -124,7 +124,7 @@ public class PointsServiceImpl implements PointsService {
 			}catch(Exception e) {
 				throw new MicroserviceException(e.getMessage());
 			}
-			messageResponse.setMessage("points refreshed successfully" + points);
+			messageResponse.setMessage("points refreshed successfully " + points);
 			messageResponse.setStatus(HttpStatus.OK);
 			messageResponse.setTimeStamp(new Date());
 

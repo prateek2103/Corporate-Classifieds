@@ -67,14 +67,7 @@ public class Offer {
 	
 	//many employees can like many offers
 	@JsonIgnore
-	@ManyToMany(fetch=FetchType.LAZY,cascade=CascadeType.PERSIST)
-	@JoinTable(name="liked_by", 
-		joinColumns = {
-				@JoinColumn(name="offer_id",referencedColumnName="id")
-		},
-		inverseJoinColumns = {
-				@JoinColumn(name="emp_id",referencedColumnName="id")
-		})
+	@ManyToMany(mappedBy = "likedOffers", fetch = FetchType.EAGER)
 	private Set<Employee> likedByEmployees = new HashSet<>();
 	
 	//no of likes on an offer
@@ -85,7 +78,7 @@ public class Offer {
 	public String toString() {
 		return "Offer [id=" + id + ", name=" + name + ", description=" + description + ", category=" + category
 				+ ", openDate=" + openDate + ", engagedDate=" + engagedDate + ", closedDate=" + closedDate + ", likes="
-				+ likes + "]";
+				+ likes + "]" + likedByEmployees;
 	}
 	
 	

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 public class EmployeeOffersTest {
 
 	EmployeeOffers offers=new EmployeeOffers();
-	EmployeeOffers empOffers=new EmployeeOffers(1,"abc","Apartment for rent","Apartment Rental",new Date(),new Date(),new Date(),1,2,10);
+	EmployeeOffers empOffers=new EmployeeOffers();
 	
 	@Test
 	void testOfferId()
@@ -35,15 +35,15 @@ public class EmployeeOffersTest {
 	@Test
 	void testOfferEmpId()
 	{
-		offers.setEmpId(1);
-		assertEquals(offers.getEmpId(),"1");
+		offers.setId(1);
+		assertEquals(offers.getId(),"1");
 	}
 	
 	@Test
 	void testOfferEngagedEmpId()
 	{
-		offers.setEngagedEmpId(2);
-		assertEquals(offers.getEngagedEmpId(),"2");
+		offers.setEngagedEmp(new Employee());
+		assertEquals(offers.getEngagedEmp(),new Employee());
 	}
 	
 	@Test

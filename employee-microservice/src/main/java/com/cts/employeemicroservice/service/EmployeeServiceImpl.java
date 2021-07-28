@@ -19,6 +19,7 @@ import com.cts.employeemicroservice.model.Employee;
 import com.cts.employeemicroservice.model.EmployeeOffers;
 import com.cts.employeemicroservice.model.MessageResponse;
 import com.cts.employeemicroservice.repository.EmployeeRepository;
+import com.cts.employeemicroservice.repository.OfferRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,9 +35,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Autowired
 	OfferClient offerClient;
-	
+
 	@Autowired
 	MessageResponse messageResponse;
+	
+	@Autowired
+	OfferRepository offerRepository;
 
 	@Override
 	public List<EmployeeOffers> viewEmpOffers(String token, int id) throws MicroserviceException, InvalidUserException {
@@ -106,50 +110,50 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	// view top 3 offers of the employee
 	@Override
-	public List<EmployeeOffers> viewTopOffers(String token, int employeeId) throws MicroserviceException,InvalidUserException{
+	public List<EmployeeOffers> viewTopOffers(String token, int employeeId)
+			throws MicroserviceException, InvalidUserException {
 		log.info("Inside view top offers");
-		AuthResponse authResponse ;
-		//validate the user
+		AuthResponse authResponse;
+		// validate the user
 		try {
 			authResponse = authClient.getValidity(token).getBody();
 		} catch (Exception e) {
 			throw new MicroserviceException(e.getMessage());
 		}
-		
-		//if the token is valid
+
+		// if the token is valid
 		if (authResponse.isValid()) {
 			List<EmployeeOffers> empOffers;
 			try {
 				empOffers = offerClient.getOffersById(token, employeeId);
-			}catch(Exception e) {
+			} catch (Exception e) {
 				throw new MicroserviceException(e.getMessage());
 			}
-			
-			//retrieve the top 3 offers
+
+			// retrieve the top 3 offers
 			List<EmployeeOffers> empList = empOffers.stream()
 					.sorted(Comparator.comparing(EmployeeOffers::getLikes).reversed()).limit(3)
 					.collect(Collectors.toList());
-			
+
 			return empList;
-		} 
-		else {
+		} else {
 			log.error("Token invalid");
 			throw new InvalidUserException("Invalid User");
 		}
 	}
 
 	@Override
-	public MessageResponse savePoints(String token, int points) throws MicroserviceException,InvalidUserException {
+	public MessageResponse savePoints(String token, int points) throws MicroserviceException, InvalidUserException {
 		log.info("Inside save points");
-		AuthResponse authResponse ;
-		//validate the user
+		AuthResponse authResponse;
+		// validate the user
 		try {
 			authResponse = authClient.getValidity(token).getBody();
 		} catch (Exception e) {
 			throw new MicroserviceException(e.getMessage());
 		}
-		
-		//if the token is valid
+
+		// if the token is valid
 		if (authResponse.isValid()) {
 			Employee emp = employeeRepository.findById(authResponse.getEmpid()).orElse(null);
 			emp.setPointsGained(points);
@@ -158,8 +162,65 @@ public class EmployeeServiceImpl implements EmployeeService {
 			messageResponse.setStatus(HttpStatus.OK);
 			messageResponse.setTimeStamp(new Date());
 			return messageResponse;
+		} else {
+			throw new InvalidUserException("invalid user");
 		}
-		else {
+	}
+
+	@Override
+	public MessageResponse likeOffer(String token, int offerId) throws MicroserviceException {
+		log.info("Inside like offer");
+		AuthResponse authResponse;
+
+		// validate the user
+		try {
+			authResponse = authClient.getValidity(token).getBody();
+		} catch (Exception e) {
+			throw new MicroserviceException(e.getMessage());
+		}
+
+		// if the token is valid
+		if (authResponse.isValid()) {
+			EmployeeOffers offer;
+			
+			//get the offer details
+			try {
+				offer = offerClient.getOfferDetailsById(token, offerId);
+			} catch (Exception e) {
+				throw new MicroserviceException(e.getMessage());
+			}
+			
+			//get the employee details
+			Employee emp = employeeRepository.findById(authResponse.getEmpid()).orElse(null);
+			if (emp == null) {
+				throw new InvalidUserException("Invalid employee");
+			}
+			
+			emp.setId(authResponse.getEmpid());
+			//check if the offer is already liked by the employee or not
+			if(emp.getLikedOffers().contains(offer)==false) {
+				try{
+					//update the likes
+					log.info("this is done");
+					MessageResponse response = offerClient.updateLikes(token,offer.getId());
+					
+				}catch(Exception e){
+					throw new MicroserviceException(e.getMessage());
+				}
+			}
+			
+			//save the updates
+			log.info("emp"+emp);
+			log.info("offer"+offer);
+			emp.getLikedOffers().add(offer);
+			employeeRepository.save(emp);
+			messageResponse.setMessage("likes updated successfully");
+			messageResponse.setStatus(HttpStatus.OK);
+			messageResponse.setTimeStamp(new Date());
+			
+			return messageResponse;
+			
+		}else {
 			throw new InvalidUserException("invalid user");
 		}
 	}
