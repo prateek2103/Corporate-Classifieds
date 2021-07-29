@@ -40,7 +40,10 @@
                 </tr>
                 <tr>
                     <td>Points Gained</td>
-                    <td>{{employee.pointsGained}} &nbsp;&nbsp; <button (click)="updatePoints()" class="material-icons btn btn-outline-dark">refresh</button></td>
+                    <td>{{employee.pointsGained}} &nbsp;&nbsp;
+                        <!-- refresh button to update the points -->
+                        <button (click)="updatePoints()" class="material-icons btn btn-outline-dark">refresh</button>
+                    </td>
                 </tr>
             </tbody>
         </table>

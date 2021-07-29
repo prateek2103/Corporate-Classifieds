@@ -1,3 +1,4 @@
+//response schema for rest api
 export class messageResponse{
     constructor(
         public message:string,

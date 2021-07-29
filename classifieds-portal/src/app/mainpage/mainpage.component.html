@@ -1,6 +1,7 @@
 <div class="container-fluid">
     <div class="alert alert-danger" *ngIf="pageError!=''">{{pageError}}</div>
     <div class="row">
+        <!--left pane-->
         <div class="col-lg-3 col-md-3 col-sm-12" id="left-pane">
             <div class="d-flex flex-column">
                 <div class="p-2 "><a class="btn btn-outline-dark" routerLink="/profile">My Profile</a></div>
@@ -9,8 +10,14 @@
                 <div class="p-2 "><a class="btn btn-outline-dark" (click)="showRecentlyLiked()">view recently liked offers</a></div>
             </div>
         </div>
+
+        <!--right pane-->
         <div class="col-lg-9 col-md-9 col-sm-12 " id="right-pane " style="padding-top:20px; ">
+
+            <!-- options -->
             <div class="d-flex flex-row justify-content-between" style="width:80%;margin:auto ">
+
+                <!-- filter by category-->
                 <div class="p-2 ">
                     <select class="form-control" (change)="onCategoryChange()" #category>
                         <option selected>Filter by category</option>
@@ -18,9 +25,13 @@
                         <option>Plants</option>
                     </select>
                 </div>
+
+                <!-- filter by top likes-->
                 <div class="p-2 ">
                     <button class="btn btn-outline-dark" (click)="filterByTopLikes()">Filter by top likes</button>
                 </div>
+
+                <!-- filter by posted date-->
                 <div class='p-2'>
                     <div class='input-group'>
                         <input type='text' class='form-control' placeholder="filter by posted-date" #postedDate>
@@ -30,6 +41,8 @@
                     </div>
                 </div>
             </div>
+
+            <!-- offers-->
             <div class="row" style="width:90%;margin:auto">
                 <div *ngFor="let offer of offers " class="offer-content">
                     <h5 class="card-title " style="background:rgb(43, 42, 42);color:white;padding:10px; ">{{offer.name}}</h5>

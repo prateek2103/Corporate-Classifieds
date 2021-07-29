@@ -11,13 +11,28 @@ import { OfferEditComponent } from './offer-edit/offer-edit.component';
 import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
+  //login page
   { path: 'login', component: LoginComponent },
+
+  //welcome page
   { path: 'homepage', component: HomepageComponent },
+
+  //homepage once logged in
   { path: 'main', component: MainpageComponent, canActivate:[AuthGuard] },
+
+  //get offer details for a particular offer
   { path: 'offerDetails/:id', component: OfferDetailsComponent,canActivate:[AuthGuard] },
+
+  //profile of the user
   { path: 'profile', component: ProfileComponent,canActivate:[AuthGuard] },
+  
+  //all the offers of the user
   { path: 'myOffers', component: MyOffersComponent ,canActivate:[AuthGuard]},
+  
+  //edit an offer of the user
   { path: 'editOffer/:id', component: OfferEditComponent ,canActivate:[AuthGuard]},
+  
+  //add a new offer
   { path: 'addOffer', component: AddOfferComponent,canActivate:[AuthGuard] }
 ];
 

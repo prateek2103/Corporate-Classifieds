@@ -11,21 +11,34 @@ import { messageResponse } from '../model/messageResponse';
   templateUrl: './offer-edit.component.html',
   styleUrls: ['./offer-edit.component.css']
 })
+
 export class OfferEditComponent implements OnInit {
+  //offer object to save offer details
   offer: Offer = new Offer(0, '', '', '', new Date, new Date, new Date, 0)
-  pageError:string = ""
+
+  //show errors to user
+  pageError: string = ""
+
+  //reactive form
   offerForm: FormGroup = new FormGroup({})
-  token:string|null=""
-  id:number = 0
+
+  //jwt token
+  token: string | null = ""
+
+  //offer id
+  id: number = 0
+
+  //config service - httpClient , route - to navigate
   constructor(private configService: ConfigService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+
     //get the token
     this.token = localStorage.getItem("token")
-    
-    //get the offer id
+
+    //get the offer id from route param
     this.id = Number(this.route.snapshot.paramMap.get('id'))
-    
+
     //get the offer details
     if (this.token != null) {
       this.configService.getOfferDetailsById(this.token, this.id).subscribe((data: Offer) => {
@@ -46,33 +59,35 @@ export class OfferEditComponent implements OnInit {
             Validators.required
           ])
         })
-      },error=>{
+      }, error => {
         console.log(error)
         this.pageError = "There was some error, Please try again later"
       })
-    } 
+    }
   }
 
   get name() { return this.offerForm.get('name') }
   get description() { return this.offerForm.get('description') }
-  get category(){ return this.offerForm.get('category')}
+  get category() { return this.offerForm.get('category') }
 
   //on submit function
-  onSubmit(){
+  onSubmit() {
+
+    //save the form details
     this.offer.name = this.offerForm.value.name
     this.offer.description = this.offerForm.value.description
     this.offer.category = this.offerForm.value.category
 
-    //update the offer details
-    if(this.token!=null)
-    this.configService.updateOffer(this.token,this.offer).subscribe((data:messageResponse)=>{
-      this.pageError = data.message
-    },error=>{
-      if(error.status = 401){
-        this.pageError = "Offer editing is denied"
-      }
-    })
-    
-  }
+    //update the offer details by calling the rest api
+    if (this.token != null)
+      this.configService.updateOffer(this.token, this.offer).subscribe((data: messageResponse) => {
+        this.pageError = data.message
+      }, error => {
 
+        //incase offer does not belong to the user
+        if (error.status = 401) {
+          this.pageError = "Offer editing is denied"
+        }
+      })
+  }
 }

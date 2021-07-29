@@ -8,14 +8,18 @@ import { AuthService } from '../guards/auth.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  
+
+  //to store the localStorage 
   local:any
   constructor(private authService:AuthService,private route:Router) { }
   ngOnInit(): void {
     this.local = localStorage
   }
 
+  //logout function
   logout(){
+
+    //call the auth service and reroute to login page
     this.authService.logout();
     this.route.navigate(['/login']);
   }

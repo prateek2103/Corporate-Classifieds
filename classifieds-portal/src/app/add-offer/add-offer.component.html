@@ -16,7 +16,7 @@
                         <td>
                             <input type="text" formControlName="name" style="display:none">
                             <input type="text" formControlName="name" class="form-control">
-                            <!-- error checking -->
+                            <!-- error checking for name -->
                             <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="alert alert-danger">
 
                                 <div *ngIf="name?.errors?.required">
@@ -33,7 +33,7 @@
                         <td>Description</td>
                         <td>
                             <input type="textbox" rows="2" formControlName="description" class="form-control">
-                            <!-- error checking -->
+                            <!-- error checking for description-->
                             <div *ngIf="description?.invalid && (description?.dirty || description?.touched)" class="alert alert-danger">
 
                                 <div *ngIf="description?.errors?.required">

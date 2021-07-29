@@ -1,3 +1,4 @@
+//offer schema for Offer Object
 export class Offer{
     constructor(
         public id:number,

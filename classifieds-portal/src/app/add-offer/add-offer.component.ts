@@ -5,20 +5,34 @@ import { Router } from '@angular/router';
 import { ConfigService } from '../config/config.service';
 import { messageResponse } from '../model/messageResponse';
 import { Offer } from '../model/Offer';
+
 @Component({
   selector: 'app-add-offer',
   templateUrl: './add-offer.component.html',
   styleUrls: ['./add-offer.component.css']
 })
+
 export class AddOfferComponent implements OnInit {
+  //offer form
   addOfferForm: FormGroup = new FormGroup({})
+
+  //error handling
   pageError: String = ""
+
+  //offer object to save the offer details
   offer: Offer = new Offer(0, "", "", "", new Date(), new Date(), new Date(), 0)
+
+  //jwt token
   token: string | null = ""
+
   constructor(private configService: ConfigService,private route:Router) { }
 
   ngOnInit(): void {
+
+    //retrieve the token
     this.token = localStorage.getItem("token")
+
+    //initiate the form
     this.addOfferForm = new FormGroup({
       description: new FormControl("", [
         Validators.required,
@@ -40,6 +54,7 @@ export class AddOfferComponent implements OnInit {
 
   onSubmit() {
     console.log(this.addOfferForm)
+
     //update the offer values
     this.offer.name = this.addOfferForm.value.name
     this.offer.description = this.addOfferForm.value.description
@@ -51,6 +66,7 @@ export class AddOfferComponent implements OnInit {
         this.route.navigate(["/myOffers"])
       },error=>{
         console.log(error)
+        this.pageError = "We encountered an error please try again later"
       })
   }
 }

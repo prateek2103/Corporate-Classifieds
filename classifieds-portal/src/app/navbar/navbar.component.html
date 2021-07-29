@@ -10,6 +10,7 @@
                 <a class="nav-link" routerLink="/homepage">Home</a>
             </li>
 
+            <!-- once the user logged in-->
             <li class="nav-item" *ngIf="local.getItem('token')!=null">
                 <a class="nav-link" routerLink="/main">Home</a>
             </li>
@@ -22,10 +23,12 @@
                 <a class="nav-link" routerLink="/login">Login</a>
             </li>
 
+            <!-- once the user logged in-->
             <li class="nav-item" *ngIf="local.getItem('token')!=null">
                 <a class="nav-link" (click)="logout()">Logout</a>
             </li>
 
+            <!-- once the user logged in-->
             <li class="nav-item" *ngIf="local.getItem('token')!=null">
                 <a href="/profile" class="material-icons" style="background:transparent;text-decoration:none;color:white;font-size:40px;">account_circle</a>
             </li>

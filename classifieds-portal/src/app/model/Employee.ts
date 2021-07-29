@@ -1,3 +1,4 @@
+//employee schema for Employee object
 export class Employee{
     constructor(
         public id:number,
