@@ -4,9 +4,9 @@
         <div class="col-lg-3 col-md-3 col-sm-12" id="left-pane">
             <div class="d-flex flex-column">
                 <div class="p-2 "><a class="btn btn-outline-dark" routerLink="/profile">My Profile</a></div>
-                <div class="p-2 "><a class="btn btn-outline-dark ">Post an offer</a></div>
-                <div class='p-2'><a class="btn btn-outline-dark ">My offers</a></div>
-                <div class="p-2 "><a class="btn btn-outline-dark">view recently liked offers</a></div>
+                <div class="p-2 "><a class="btn btn-outline-dark " routerLink="/addOffer">Post an offer</a></div>
+                <div class='p-2'><a class="btn btn-outline-dark " routerLink="/myOffers">My offers</a></div>
+                <div class="p-2 "><a class="btn btn-outline-dark" (click)="showRecentlyLiked()">view recently liked offers</a></div>
             </div>
         </div>
         <div class="col-lg-9 col-md-9 col-sm-12 " id="right-pane " style="padding-top:20px; ">

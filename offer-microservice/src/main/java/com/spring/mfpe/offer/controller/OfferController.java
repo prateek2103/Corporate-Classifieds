@@ -114,6 +114,7 @@ public class OfferController {
 	 * @throws MicroserviceException
 	 * @throws InvalidTokenException
 	 */
+	@CrossOrigin(origins="http://localhost:4200")
 	@PostMapping("/engageOffer")
 	public SuccessResponse engageOffer(@RequestHeader("Authorization") String token,
 			@RequestParam(name = "offerId") int offerId, @RequestParam(name = "employeeId") int employeeId)
@@ -132,6 +133,7 @@ public class OfferController {
 	 * @throws MicroserviceException
 	 * @throws InvalidTokenException
 	 */
+	@CrossOrigin(origins="http://localhost:4200")
 	@PostMapping("/editOffer")
 	public SuccessResponse editOffer(@RequestHeader("Authorization") String token, @RequestBody Offer offer)
 			throws OfferNotFoundException, InvalidTokenException, MicroserviceException {
@@ -148,6 +150,7 @@ public class OfferController {
 	 * @throws MicroserviceException
 	 * @throws InvalidTokenException
 	 */
+	@CrossOrigin(origins="http://localhost:4200")
 	@PostMapping("/addOffer")
 	public SuccessResponse addOffer(@RequestHeader("Authorization") String token, @RequestBody Offer offer)
 			throws EmployeeNotFoundException, InvalidTokenException, MicroserviceException {

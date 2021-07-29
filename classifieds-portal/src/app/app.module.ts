@@ -10,6 +10,9 @@ import {HttpClientModule} from "@angular/common/http";
 import { MainpageComponent } from './mainpage/mainpage.component';
 import { OfferDetailsComponent } from './offer-details/offer-details.component';
 import { ProfileComponent } from './profile/profile.component';
+import { MyOffersComponent } from './my-offers/my-offers.component';
+import { OfferEditComponent } from './offer-edit/offer-edit.component';
+import { AddOfferComponent } from './add-offer/add-offer.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +22,10 @@ import { ProfileComponent } from './profile/profile.component';
     HomepageComponent,
     MainpageComponent,
     OfferDetailsComponent,
-    ProfileComponent
+    ProfileComponent,
+    MyOffersComponent,
+    OfferEditComponent,
+    AddOfferComponent
   ],
   imports: [
     BrowserModule,

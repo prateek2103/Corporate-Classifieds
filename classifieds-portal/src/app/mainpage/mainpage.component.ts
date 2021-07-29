@@ -10,7 +10,7 @@ import { Offer } from "../model/Offer";
 export class MainpageComponent implements OnInit {
   @ViewChild("category") category: ElementRef = new ElementRef("");
   @ViewChild("postedDate") postedDate: ElementRef = new ElementRef("");
-  pageError:string=""
+  pageError: string = ""
 
   token: string | null = ""
   constructor(private configService: ConfigService) { }
@@ -56,18 +56,27 @@ export class MainpageComponent implements OnInit {
   filterByPostedDate() {
     let postedDate = this.postedDate.nativeElement.value
     if (this.token != null)
-      this.configService.getOffersByPostedDate(this.token,postedDate).subscribe((data: Offer[]) => {
+      this.configService.getOffersByPostedDate(this.token, postedDate).subscribe((data: Offer[]) => {
         console.log(data);
         this.offers = data;
       },
         error => {
           console.log(error)
-          if(error.status==400)
+          if (error.status == 400)
             this.pageError = "please enter a valid date"
 
-          if(error.status == 404)
+          if (error.status == 404)
             this.pageError = "no offers found"
           console.log(error);
         });
+  }
+
+  showRecentlyLiked() {
+    if (this.token != null)
+      this.configService.getRecentlyLiked(this.token).subscribe((data: Offer[]) => {
+        this.offers = data
+      }, error => {
+        console.log(error)
+      })
   }
 }

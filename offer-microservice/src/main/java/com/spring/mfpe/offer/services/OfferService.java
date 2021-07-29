@@ -383,6 +383,8 @@ public class OfferService {
 
 			offer.setEmp(emp);
 			offer.setOpenDate(new Date());
+			offer.setClosedDate(null);
+			offer.setEngagedDate(null);
 
 			offerRepository.save(offer);
 			successResponse.setMessage("successfully added offer");

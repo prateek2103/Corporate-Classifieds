@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
     this.configService.getUserToken(userDetails).subscribe((data:AuthResponse)=>{
       localStorage.setItem("token",data["authToken"])
       localStorage.setItem("userId",data['empid'])
-      console.log(data['authToken'])
+      console.log(localStorage.getItem("token"))
       this.router.navigate(['main'])
     },
     error =>{

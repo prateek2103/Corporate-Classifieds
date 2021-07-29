@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { AuthResponse } from "../model/authResponse";
 import { Offer } from "../model/Offer";
-import {Employee} from "../model/Employee";
+import { Employee } from "../model/Employee";
 import { messageResponse } from '../model/messageResponse';
 
 @Injectable({
@@ -50,25 +50,60 @@ export class ConfigService {
     return this.http.get<Offer>(this.offerserviceUrl + "/getOfferDetails/" + id, options)
   }
 
-  saveLike(token:string, id:number){
+  saveLike(token: string, id: number) {
     let options = {
       headers: { "Authorization": "Bearer " + token }
     }
-    return this.http.post(this.employeeserviceUrl + "/likeOffer/" + id,null,options)
+    return this.http.post(this.employeeserviceUrl + "/likeOffer/" + id, null, options)
   }
 
-  getProfile(token:String,id:number){
+  getProfile(token: String, id: number) {
     let options = {
       headers: { "Authorization": "Bearer " + token }
     }
-    return this.http.get<Employee>(this.employeeserviceUrl + "/viewProfile/" + id,options)
+    return this.http.get<Employee>(this.employeeserviceUrl + "/viewProfile/" + id, options)
   }
 
-  updatePoints(token:String,id:number){
+  updatePoints(token: String, id: number) {
     let options = {
       headers: { "Authorization": "Bearer " + token }
     }
-    return this.http.post<messageResponse>(this.pointsserviceUrl+ "/refreshpointsbyemp/" + id,null,options)
+    return this.http.post<messageResponse>(this.pointsserviceUrl + "/refreshpointsbyemp/" + id, null, options)
   }
-  
+
+  getMyOffers(token: String, id: number) {
+    let options = {
+      headers: { "Authorization": "Bearer " + token }
+    }
+    return this.http.get<Offer[]>(this.employeeserviceUrl + "/viewEmployeeOffers/" + id, options)
+  }
+
+  updateOffer(token:String,offer:Offer){
+    let options = {
+      headers: { "Authorization": "Bearer " + token }
+    }
+    return this.http.post<messageResponse>(this.offerserviceUrl + '/editOffer',offer,options)
+  }
+
+  addOffer(token:String,offer:Offer){
+    let options = {
+      headers: { "Authorization": "Bearer " + token }
+    }
+    return this.http.post<messageResponse>(this.offerserviceUrl + "/addOffer",offer,options)
+  }
+
+  engageOffer(token:String,offerId:number,empId:number){
+    let options = {
+      headers: { "Authorization": "Bearer " + token },
+      params: {"offerId":offerId,"employeeId":empId}
+    }
+    return this.http.post<messageResponse>(this.offerserviceUrl + "/engageOffer",null,options)
+  }
+
+  getRecentlyLiked(token:string){
+    let options = {
+      headers: { "Authorization": "Bearer " + token },
+    }
+    return this.http.get<Offer[]>(this.employeeserviceUrl + "/recentlyLiked",options)
+  }
 }

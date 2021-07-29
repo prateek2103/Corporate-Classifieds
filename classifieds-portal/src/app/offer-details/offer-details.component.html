@@ -46,6 +46,7 @@
         </table>
         <span>Liked the post?</span> &nbsp;&nbsp;<span class="material-icons" [ngStyle]="{'color':isLiked?'red':'rgb(71, 69, 69)'}" (click)="likedIt()">favorite</span>
         <button *ngIf="isLiked" (click)="submitLike()" class="btn btn-primary">Submit</button>
-        <br><br><a class="btn btn-dark" routerLink="/main">Go back</a>
+        <br><br><a class="btn btn-dark" routerLink="/main">Go back</a> &nbsp;&nbsp;
+        <button class="btn btn-danger" [ngStyle]="{display:offer.closedDate==null && offer.engagedDate==null?'inline':'none'}" (click)="engageUser()">Engage</button>
     </div>
 </div>

@@ -1,9 +1,11 @@
 package com.cts.employeemicroservice.service;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +40,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Autowired
 	MessageResponse messageResponse;
-	
+
 	@Autowired
 	OfferRepository offerRepository;
 
@@ -182,46 +184,69 @@ public class EmployeeServiceImpl implements EmployeeService {
 		// if the token is valid
 		if (authResponse.isValid()) {
 			EmployeeOffers offer;
-			
-			//get the offer details
+
+			// get the offer details
 			try {
 				offer = offerClient.getOfferDetailsById(token, offerId);
 			} catch (Exception e) {
 				throw new MicroserviceException(e.getMessage());
 			}
-			
-			//get the employee details
+
+			// get the employee details
 			Employee emp = employeeRepository.findById(authResponse.getEmpid()).orElse(null);
 			if (emp == null) {
 				throw new InvalidUserException("Invalid employee");
 			}
-			
+
 			emp.setId(authResponse.getEmpid());
-			//check if the offer is already liked by the employee or not
-			if(emp.getLikedOffers().contains(offer)==false) {
-				try{
-					//update the likes
+			// check if the offer is already liked by the employee or not
+			if (emp.getLikedOffers().contains(offer) == false) {
+				try {
+					// update the likes
 					log.info("this is done");
-					MessageResponse response = offerClient.updateLikes(token,offer.getId());
-					
-				}catch(Exception e){
+					MessageResponse response = offerClient.updateLikes(token, offer.getId());
+
+				} catch (Exception e) {
 					throw new MicroserviceException(e.getMessage());
 				}
 			}
-			
-			//save the updates
-			log.info("emp"+emp);
-			log.info("offer"+offer);
+
+			// save the updates
+			log.info("emp" + emp);
+			log.info("offer" + offer);
 			emp.getLikedOffers().add(offer);
 			employeeRepository.save(emp);
 			messageResponse.setMessage("likes updated successfully");
 			messageResponse.setStatus(HttpStatus.OK);
 			messageResponse.setTimeStamp(new Date());
-			
+
 			return messageResponse;
-			
-		}else {
+
+		} else {
 			throw new InvalidUserException("invalid user");
 		}
+	}
+
+	@Override
+	public Set<EmployeeOffers> getLikedOffers(String token) throws MicroserviceException, InvalidUserException {
+		log.info("Inside like offer");
+		AuthResponse authResponse;
+
+		// validate the user
+		try {
+			authResponse = authClient.getValidity(token).getBody();
+		} catch (Exception e) {
+			throw new MicroserviceException(e.getMessage());
+		}
+
+		// if the token is valid
+		if (authResponse.isValid()) {
+			log.info(""+authResponse.getEmpid());
+			Employee emp = employeeRepository.findById(authResponse.getEmpid()).orElse(null);
+			return emp.getLikedOffers().stream().sorted(Comparator.comparing(EmployeeOffers::getOpenDate).reversed())
+					.limit(3).collect(Collectors.toSet());
+		}
+
+		throw new InvalidUserException("invalid user");
 	}
 }
