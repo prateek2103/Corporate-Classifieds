@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test;
 public class MessageResponseTest {
 
 	MessageResponse messageResponse = new MessageResponse();
-	MessageResponse msgResponse = new MessageResponse(new Date(),"abc","abc");
-	MessageResponse msgRes = new MessageResponse("abc","abc");
 	Date date=new Date();
 	
 	@Test

@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import com.cts.employeemicroservice.client.AuthClient;
 import com.cts.employeemicroservice.client.OfferClient;
 import com.cts.employeemicroservice.exception.InvalidUserException;
+import com.cts.employeemicroservice.exception.MicroserviceException;
 import com.cts.employeemicroservice.model.AuthResponse;
 import com.cts.employeemicroservice.model.Employee;
 import com.cts.employeemicroservice.model.EmployeeOffers;
@@ -40,24 +41,23 @@ public class EmployeeServiceImplTest {
 	OfferClient offerClient;
 	
 	@Test
-	public void viewEmpOffersTest(){
+	public void viewEmpOffersTest() throws InvalidUserException, MicroserviceException{
 		 
 		ResponseEntity<AuthResponse> authResponse = new ResponseEntity<>(new AuthResponse(1,"abc",true),HttpStatus.OK);
 		List<EmployeeOffers> emp=new ArrayList<EmployeeOffers>();
-		emp.add(new EmployeeOffers(1,"abc","Apartment for rent","Apartment Rental",new Date(),new Date(),new Date(),1,2,10));
-		ResponseEntity<List<EmployeeOffers>> employeeList=new ResponseEntity<>(emp,HttpStatus.OK);
+		emp.add(new EmployeeOffers());
 		when(authClient.getValidity("token")).thenReturn(authResponse);
-		when(offerClient.getOffersById("token",1)).thenReturn(employeeList);
+		when(offerClient.getOffersById("token",1)).thenReturn(emp);
 		List<EmployeeOffers> resultEmployeeList=employeeServiceImpl.viewEmpOffers("token", 1);
 		assertEquals(resultEmployeeList,emp);
 	
 	}
 	
 	@Test
-	public void viewEmployee(){
+	public void viewEmployee() throws InvalidUserException, MicroserviceException{
 		 
 		ResponseEntity<AuthResponse> authResponse = new ResponseEntity<>(new AuthResponse(1,"abc",true),HttpStatus.OK);
-		Employee employee= new Employee(1,"abc","Full Stack","Gender",23,959983990,"abc@gmail.com",100);
+		Employee employee= new Employee();
 		Optional<Employee> data = Optional.of(employee);
 		when(authClient.getValidity("token")).thenReturn(authResponse);
 		when(employeeRepository.findById(1)).thenReturn(data);
@@ -66,18 +66,6 @@ public class EmployeeServiceImplTest {
 	
 	}
 	
-	@Test
-	public void viewTopOffersTest(){
-		 
-		ResponseEntity<AuthResponse> authResponse = new ResponseEntity<>(new AuthResponse(1,"abc",true),HttpStatus.OK);
-		List<EmployeeOffers> emp=new ArrayList<EmployeeOffers>();
-		emp.add(new EmployeeOffers(1,"abc","Apartment for rent","Apartment Rental",new Date(),new Date(),new Date(),1,2,10));
-		ResponseEntity<List<EmployeeOffers>> employeeList=new ResponseEntity<>(emp,HttpStatus.OK);
-		when(authClient.getValidity("token")).thenReturn(authResponse);
-		when(offerClient.getOfferByTopLikes("token")).thenReturn(employeeList);
-		List<EmployeeOffers> resultEmployeeList=employeeServiceImpl.viewTopOffers("token",1);
-		assertEquals(resultEmployeeList,emp);
-	}
 	
 	@Test
 	public void invalidUserTest()

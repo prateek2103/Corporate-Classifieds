@@ -17,12 +17,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "Employee")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Employee {
 
 	@Id

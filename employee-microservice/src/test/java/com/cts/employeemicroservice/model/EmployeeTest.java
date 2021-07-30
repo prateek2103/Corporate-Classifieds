@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 public class EmployeeTest {
 
 	Employee emp=new Employee();
-	Employee employee= new Employee(1,"abc","Full Stack","Gender",23,959983990,"abc@gmail.com",100);
 	
 	@Test
 	void testEmpId()
@@ -47,7 +46,8 @@ public class EmployeeTest {
 	@Test
 	void testEmpContactNumber()
 	{
-		emp.setContactNumber(959983990);
+		long number = Long.parseLong(new String("959983990"));
+		emp.setContactNumber(number);
 		assertEquals(emp.getContactNumber(),959983990);
 	}
 	
@@ -67,7 +67,7 @@ public class EmployeeTest {
 	
 	@Test
 	void testToString() {
-		String string = employee.toString();
-		assertEquals(employee.toString(), string);
+		String string = emp.toString();
+		assertEquals(emp.toString(), string);
 	}
 }
