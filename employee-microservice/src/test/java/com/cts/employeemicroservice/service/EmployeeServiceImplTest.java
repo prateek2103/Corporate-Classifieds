@@ -91,12 +91,4 @@ public class EmployeeServiceImplTest {
 		assertThrows(InvalidUserException.class,()->employeeServiceImpl.viewTopOffers("token",1));
 	}
 	
-	@Test
-	public void noSuchElementTest()
-	{
-		ResponseEntity<AuthResponse> auth = new ResponseEntity<>(new AuthResponse(1,"abc",true),HttpStatus.OK);
-		when(authClient.getValidity("token")).thenReturn(auth);
-		when(employeeRepository.findById(1)).thenReturn(null);
-		assertThrows(NoSuchElementException.class,()->employeeServiceImpl.viewEmployee("token",2));
-	}
 }

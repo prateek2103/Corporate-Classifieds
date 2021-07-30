@@ -26,7 +26,7 @@ public class EmployeeTest {
 	void testEmpDepartment()
 	{
 		emp.setDepartment("Full Stack");
-		assertEquals(emp.getEmail(),"Full Stack");
+		assertEquals(emp.getDepartment(),"Full Stack");
 	}
 	
 	@Test

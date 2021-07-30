@@ -36,14 +36,15 @@ public class EmployeeOffersTest {
 	void testOfferEmpId()
 	{
 		offers.setId(1);
-		assertEquals(offers.getId(),"1");
+		assertEquals(offers.getId(),1);
 	}
 	
 	@Test
 	void testOfferEngagedEmpId()
 	{
-		offers.setEngagedEmp(new Employee());
-		assertEquals(offers.getEngagedEmp(),new Employee());
+		Employee emp = new Employee();
+		offers.setEngagedEmp(emp);
+		assertEquals(offers.getEngagedEmp(),emp);
 	}
 	
 	@Test
@@ -56,13 +57,15 @@ public class EmployeeOffersTest {
 	@Test
 	void testEngagedDate()
 	{
-		offers.setEngagedDate(new Date());
-		assertEquals(offers.getOpenDate(),new Date());
+		Date date = new Date();
+		offers.setEngagedDate(date);
+		assertEquals(offers.getEngagedDate(),date);
 	}
 	
 	@Test
 	void testClosedDate()
 	{
+		
 		offers.setClosedDate(new Date());
 		assertEquals(offers.getClosedDate(),new Date());
 	}

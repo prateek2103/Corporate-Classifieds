@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 
 //global exception handler for all the generated exceptions
 @ControllerAdvice
-@NoArgsConstructor
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 	// to handle offer not found exception
