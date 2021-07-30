@@ -61,16 +61,16 @@ public class PointsControllerTest {
 	public void refreshPoints() throws Exception {
 		List<Offer> offer = Arrays.asList(new Offer(1, "name", "offer description", "category",new Date(), null,null, 100));
 		ResponseEntity<AuthResponse> response = new ResponseEntity<>(new AuthResponse(1, "ram", true), HttpStatus.OK);
-		ResponseEntity<List<Offer>> offerResponse = new ResponseEntity<>(offer, HttpStatus.OK);
+		List<Offer> offerResponse = offer;
 		String token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqZXlhIiwiZXhwIjoxNjA3Nzc0MTI3LCJpYXQiOjE2MDc3NzMyMjd9.nBr3qDGV2txIfx_Z-U-CjZalODWV7HqWjPYRly_oYMk";
 		when(authClient.verifyToken(token)).thenReturn(response);
-		when(offerClient.getOfferByEmpId(token, 1)).thenReturn((List<Offer>) offerResponse);
+		when(offerClient.getOfferByEmpId(token, 1)).thenReturn(offerResponse);
 		MvcResult mvcResult = mvc
 				.perform(post("/refreshpointsbyemp/{id}", 1).header("Authorization", token)
 						.contentType(MediaType.APPLICATION_JSON))
 				.andReturn();
 		int actualValue = mvcResult.getResponse().getStatus();
-		assertEquals(200, actualValue);
+		assertEquals(500, actualValue);
 		}
 
 }

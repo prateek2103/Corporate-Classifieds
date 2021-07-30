@@ -23,7 +23,7 @@ public class MessageResponseTest {
 	@Test
 	void testStatus() {
 		messageResponse.setStatus(HttpStatus.OK);
-		assertEquals(messageResponse.getMessage(), HttpStatus.OK);
+		assertEquals(messageResponse.getStatus(), HttpStatus.OK);
 	}
 	
 	@Test

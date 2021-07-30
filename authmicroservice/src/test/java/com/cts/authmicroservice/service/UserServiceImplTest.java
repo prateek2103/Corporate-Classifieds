@@ -80,14 +80,5 @@ public class UserServiceImplTest {
 		  assertEquals(result.isValid(), false);
 	}
 	 
-	
-	@Test
-	public void testUserNotFoundException()
-	{
-		UserModel user1 = new UserModel(1, "abc", "abc");
-		Optional<UserModel> data1 = Optional.of(user1);
-		when(userRepository.findById("admin")).thenReturn(data1);
-		assertThrows(UnauthorizedException.class,()->userServiceImpl.login(new UserModel(1,"admin","abs")));
-	}
 
 }
