@@ -52,6 +52,7 @@ export class ProfileComponent implements OnInit {
 
         //save the employee's points
         this.employee.pointsGained = Number(data.message.split(" ")[3])
+        this.pageError = "points refreshed successfully"
       }, error => {
         console.log(error)
         this.pageError = "we encountered some error please try again later"

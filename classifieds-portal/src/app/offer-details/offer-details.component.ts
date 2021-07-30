@@ -70,14 +70,15 @@ export class OfferDetailsComponent implements OnInit {
 
   //engage a user 
   engageUser() {
-
     //call the rest api
     if (this.token != null) {
       this.configService.engageOffer(this.token, this.offer.id, this.empId).subscribe((data: messageResponse) => {
-        this.pageError = "engaged successfully"
         
-        //refresh the page
-        window.location.reload()
+        if(data.status == "BAD_REQUEST"){
+          this.pageError = data.message
+        }else{
+          window.location.reload()
+        }
         console.log(data)
       }, error => {
         console.log(error);

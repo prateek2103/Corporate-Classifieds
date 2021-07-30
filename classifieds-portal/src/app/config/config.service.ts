@@ -40,7 +40,7 @@ export class ConfigService {
   //get offers by category
   getOffers(token: string, category: string) {
     let options = {
-      headers: { "Authorization": "Bearer " + token, "Access-Control-Allow-Origin": "*" }
+      headers: { "Authorization": "Bearer " + token}
     }
     return this.http.get<Offer[]>(this.offerserviceUrl + "/getOfferByCategory/" + category, options)
   }
