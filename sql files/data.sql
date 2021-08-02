@@ -1,5 +1,3 @@
-use mfpe;
-
 create Table user(
 	empid int primary key auto_increment,
 	emp_username varchar(50) not null,
