@@ -43,3 +43,12 @@ ul>li {
 input.form-control {
     display: inline;
 }
+
+.offer-content a {
+    background-color: rgba(7, 135, 194, 0.993) !important;
+}
+
+button.material-icons {
+    border: none;
+    background: transparent;
+}

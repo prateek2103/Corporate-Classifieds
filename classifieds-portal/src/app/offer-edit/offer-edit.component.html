@@ -2,6 +2,7 @@
     <div class="alert alert-danger" *ngIf="pageError!=''">{{pageError}}</div>
     <div class="offer-details-content">
         <h1>Offer details</h1>
+        <br>
         <form [formGroup]="offerForm" (ngSubmit)="onSubmit()">
             <table class="table">
                 <thead>

@@ -13,6 +13,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { MyOffersComponent } from './my-offers/my-offers.component';
 import { OfferEditComponent } from './offer-edit/offer-edit.component';
 import { AddOfferComponent } from './add-offer/add-offer.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { AddOfferComponent } from './add-offer/add-offer.component';
     ProfileComponent,
     MyOffersComponent,
     OfferEditComponent,
-    AddOfferComponent
+    AddOfferComponent,
+    ContactUsComponent
   ],
   imports: [
     BrowserModule,

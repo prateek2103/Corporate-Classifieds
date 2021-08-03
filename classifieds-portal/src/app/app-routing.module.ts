@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddOfferComponent } from './add-offer/add-offer.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
 import { AuthGuard } from './guards/auth-guard.service';
 import { HomepageComponent } from './homepage/homepage.component';
 import { LoginComponent } from './login/login.component';
@@ -36,7 +37,10 @@ const routes: Routes = [
   { path: 'addOffer', component: AddOfferComponent, canActivate: [AuthGuard] },
 
   //redirection route
-  { path: '', redirectTo: "/homepage" , pathMatch:"full"}
+  { path: '', redirectTo: "/homepage", pathMatch: "full" },
+
+  //contact us
+  { path: 'contactUs', component: ContactUsComponent }
 ];
 
 @NgModule({

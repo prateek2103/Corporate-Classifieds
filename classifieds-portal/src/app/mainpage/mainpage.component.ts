@@ -15,6 +15,7 @@ export class MainpageComponent implements OnInit {
   
   //to view errors
   pageError: string = ""
+  showError:boolean = false
 
   //jwt token
   token: string | null = ""
@@ -37,6 +38,7 @@ export class MainpageComponent implements OnInit {
         error => {
           console.log(error);
           this.pageError = "We encountered some error please try again later"
+          this.showError = true
         });
     }
   }
@@ -56,7 +58,7 @@ export class MainpageComponent implements OnInit {
             this.pageError = "no offers found try a different category"
           else
             this.pageError = "We encountered some error please try again later"
-
+          this.showError =true
           console.log(error);
         });
   }
@@ -70,6 +72,7 @@ export class MainpageComponent implements OnInit {
       },
         error => {
           this.pageError = "We encountered some error please try again later"
+          this.showError = true
           console.log(error);
         });
   }
@@ -87,10 +90,11 @@ export class MainpageComponent implements OnInit {
           if (error.status == 400)
             this.pageError = "please enter a valid date"
 
-          if (error.status == 404)
+          else if (error.status == 404)
             this.pageError = "no offers found"
           else
             this.pageError = "We encountered an error please try again later"
+          this.showError = true
           console.log(error);
         });
   }
@@ -103,6 +107,11 @@ export class MainpageComponent implements OnInit {
       }, error => {
         console.log(error)
         this.pageError = "We encountered some error please try again later"
+        this.showError = true;
       })
+  }
+
+  closebar(){
+    this.showError=false
   }
 }
