@@ -53,6 +53,7 @@ public class OfferController {
 
 	/**
 	 * returns offer filtered by category
+	 * 
 	 * @param category
 	 * @return
 	 * @throws OfferNotFoundException
@@ -70,6 +71,7 @@ public class OfferController {
 
 	/**
 	 * returns top 3 offers filtered by likes
+	 * 
 	 * @return
 	 * @throws OfferNotFoundException
 	 * @throws MicroserviceException
@@ -86,6 +88,7 @@ public class OfferController {
 
 	/**
 	 * return offers filtered by posted date
+	 * 
 	 * @param postedDate
 	 * @return
 	 * @throws OfferNotFoundException
@@ -105,6 +108,7 @@ public class OfferController {
 
 	/**
 	 * engage a buyer with the offer
+	 * 
 	 * @param offerId
 	 * @param employeeId
 	 * @return
@@ -114,7 +118,7 @@ public class OfferController {
 	 * @throws MicroserviceException
 	 * @throws InvalidTokenException
 	 */
-	@CrossOrigin(origins="http://localhost:4200")
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/engageOffer")
 	public SuccessResponse engageOffer(@RequestHeader("Authorization") String token,
 			@RequestParam(name = "offerId") int offerId, @RequestParam(name = "employeeId") int employeeId)
@@ -127,13 +131,14 @@ public class OfferController {
 
 	/**
 	 * update the existing offer
+	 * 
 	 * @param offer
 	 * @return
 	 * @throws OfferNotFoundException
 	 * @throws MicroserviceException
 	 * @throws InvalidTokenException
 	 */
-	@CrossOrigin(origins="http://localhost:4200")
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/editOffer")
 	public SuccessResponse editOffer(@RequestHeader("Authorization") String token, @RequestBody Offer offer)
 			throws OfferNotFoundException, InvalidTokenException, MicroserviceException {
@@ -144,13 +149,14 @@ public class OfferController {
 
 	/**
 	 * add a new offer
+	 * 
 	 * @param offer
 	 * @return
 	 * @throws EmployeeNotFoundException
 	 * @throws MicroserviceException
 	 * @throws InvalidTokenException
 	 */
-	@CrossOrigin(origins="http://localhost:4200")
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/addOffer")
 	public SuccessResponse addOffer(@RequestHeader("Authorization") String token, @RequestBody Offer offer)
 			throws EmployeeNotFoundException, InvalidTokenException, MicroserviceException {
@@ -160,12 +166,14 @@ public class OfferController {
 	}
 
 	/**
-	 * returns the list of offers for a particular employee id (helper function for employee microservice)
+	 * returns the list of offers for a particular employee id (helper function for
+	 * employee microservice)
+	 * 
 	 * @param emp_id
 	 * @return
 	 * @throws OfferNotFoundException
-	 * @throws MicroserviceException 
-	 * @throws InvalidTokenException 
+	 * @throws MicroserviceException
+	 * @throws InvalidTokenException
 	 */
 	@GetMapping("/getOffers/{emp_id}")
 	public List<Offer> getOffersById(@RequestHeader("Authorization") String token, @PathVariable("emp_id") int emp_id)
@@ -174,9 +182,11 @@ public class OfferController {
 		List<Offer> offers = offerService.getOffersById(token, emp_id);
 		return offers;
 	}
-	
+
 	/**
-	 * retrieve points gained by an employee(helper function for points microservice)
+	 * retrieve points gained by an employee(helper function for points
+	 * microservice)
+	 * 
 	 * @param token
 	 * @param emp_id
 	 * @return
@@ -191,19 +201,21 @@ public class OfferController {
 		int points = offerService.getPointsById(token, emp_id);
 		return points;
 	}
-	
+
 	/**
 	 * update the likes of the offer
+	 * 
 	 * @param token
 	 * @param id
 	 * @return
-	 * @throws OfferNotFoundException 
-	 * @throws MicroserviceException 
+	 * @throws OfferNotFoundException
+	 * @throws MicroserviceException
 	 */
-	@CrossOrigin(origins="http://localhost:4200")
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/updateLikes/{offer_id}")
-	public SuccessResponse updateLikes(@RequestHeader("Authorization") String token , @PathVariable("offer_id") int id) throws MicroserviceException, OfferNotFoundException {
+	public SuccessResponse updateLikes(@RequestHeader("Authorization") String token, @PathVariable("offer_id") int id)
+			throws MicroserviceException, OfferNotFoundException {
 		log.debug("inside update likes method of offer microservice");
-		return offerService.updateLikes(token,id);
+		return offerService.updateLikes(token, id);
 	}
 }

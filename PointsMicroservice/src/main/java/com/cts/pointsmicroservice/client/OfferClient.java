@@ -17,7 +17,7 @@ public interface OfferClient {
 	@GetMapping("/getOffers/{emp_id}")
 	public List<Offer> getOfferByEmpId(@RequestHeader(name = "Authorization") String token,
 			@PathVariable("emp_id") int id);
-	
+
 	@GetMapping("/getPoints/{emp_id}")
 	public int getPointsById(@RequestHeader("Authorization") String token, @PathVariable("emp_id") int id);
 }

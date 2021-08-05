@@ -58,7 +58,6 @@ public class OfferService {
 	 */
 	public Offer getOfferDetails(String token, int offerId)
 			throws OfferNotFoundException, InvalidTokenException, MicroserviceException {
-
 		// authenticate the user
 		ResponseEntity<AuthResponse> response;
 		try {
@@ -67,18 +66,15 @@ public class OfferService {
 			log.info("some error in auth microservice");
 			throw new MicroserviceException(e.getMessage());
 		}
-
 		// check if token is valid
 		if (response.getBody().isValid()) {
 			Optional<Offer> offer = offerRepository.findById(offerId);
-
 			// if offer is not found
 			if (!offer.isPresent())
 				throw new OfferNotFoundException("No offer found");
 
 			return offer.get();
 		}
-
 		// if token is invalid
 		else {
 			throw new InvalidTokenException("token is invalid");
@@ -500,7 +496,7 @@ public class OfferService {
 
 			// update the likes
 			int likes = offer.getLikedByEmployees().size();
-			log.info(""+offer);
+			log.info("" + offer);
 			offer.setLikes(likes);
 
 			// save in the repository
@@ -510,7 +506,7 @@ public class OfferService {
 			successResponse.setStatus(HttpStatus.OK);
 			successResponse.setTimestamp(new Date());
 			return successResponse;
-		}else {
+		} else {
 			throw new InvalidTokenException("invalid user");
 		}
 	}

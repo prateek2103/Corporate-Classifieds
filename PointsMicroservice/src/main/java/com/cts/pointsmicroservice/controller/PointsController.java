@@ -25,10 +25,11 @@ public class PointsController {
 
 	/**
 	 * get points gained by a particular employee by employee id
+	 * 
 	 * @param token
 	 * @param employeeId
 	 * @return Points
-	 * @throws MicroserviceException 
+	 * @throws MicroserviceException
 	 * @throws InvalidUserException
 	 */
 	@GetMapping("/getpointsbyemp/{id}")
@@ -39,22 +40,24 @@ public class PointsController {
 	}
 
 	/**
-	 * update the employee's points gained
-	 * if the employee posted an offer and it has 50 likes within 2 days that employee gets 10 points
-	 * if the employee posted an offer and it has 100 likes within 2 days that employee gets 50 points
-	 * if the employee posted and offer and it engaged within 2 days that employee gets 100 points
+	 * update the employee's points gained if the employee posted an offer and it
+	 * has 50 likes within 2 days that employee gets 10 points if the employee
+	 * posted an offer and it has 100 likes within 2 days that employee gets 50
+	 * points if the employee posted and offer and it engaged within 2 days that
+	 * employee gets 100 points
+	 * 
 	 * @param token
 	 * @param employeeId
 	 * @return Points
-	 * @throws MicroserviceException 
+	 * @throws MicroserviceException
 	 * @throws InvalidUserException
 	 */
-	@CrossOrigin(origins="http://localhost:4200")
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/refreshpointsbyemp/{id}")
 	public ResponseEntity<?> refreshPointsByEmpId(@RequestHeader(name = "Authorization") String token,
 			@PathVariable("id") int id) throws InvalidUserException, MicroserviceException {
 		log.info("Inside refreshpoints of points microservice");
-		return new ResponseEntity<>(pointsService.refreshPoints(token, id),HttpStatus.OK);
+		return new ResponseEntity<>(pointsService.refreshPoints(token, id), HttpStatus.OK);
 	}
 
 }

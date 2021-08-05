@@ -34,31 +34,27 @@ public class PointsServiceImpl implements PointsService {
 
 	@Autowired
 	EmployeeClient employeeClient;
-	
+
 	// retrieve the points gained by an employee
 	@Override
 	public Integer getPoints(String token, int id) throws MicroserviceException, InvalidUserException {
 		log.info("Inside getpoints");
 		AuthResponse authResponse;
-
 		// verify the token
 		try {
 			authResponse = authClient.verifyToken(token).getBody();
 		} catch (Exception e) {
 			throw new MicroserviceException(e.getMessage());
 		}
-
 		// validate the user
 		if (authResponse.isValid()) {
 			Integer points;
-
 			// retrieve the points
 			try {
 				points = offerClient.getPointsById(token, id);
 			} catch (Exception e) {
 				throw new MicroserviceException(e.getMessage());
 			}
-
 			return points;
 		} else {
 			log.error("Token invalid");
@@ -66,14 +62,14 @@ public class PointsServiceImpl implements PointsService {
 		}
 	}
 
-	//refresh the points for an employee
+	// refresh the points for an employee
 	@Override
 	public MessageResponse refreshPoints(String token, int id) throws MicroserviceException, InvalidUserException {
 		log.info("Inside refreshpoints");
 		AuthResponse authResponse;
 		Integer points = 0;
 		List<Offer> offerList;
-		
+
 		// validate the token
 		try {
 			authResponse = authClient.verifyToken(token).getBody();
@@ -118,10 +114,10 @@ public class PointsServiceImpl implements PointsService {
 			}
 
 			// save the new points for the employee
-			try{
-				ResponseEntity<MessageResponse> response = employeeClient.savePoints(token,points);
+			try {
+				ResponseEntity<MessageResponse> response = employeeClient.savePoints(token, points);
 				log.info(response.toString());
-			}catch(Exception e) {
+			} catch (Exception e) {
 				throw new MicroserviceException(e.getMessage());
 			}
 			messageResponse.setMessage("points refreshed successfully " + points);

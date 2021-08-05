@@ -77,27 +77,23 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	// view employee details by employee id
 	@Override
-	public Employee viewEmployee(String token, int id) throws MicroserviceException, InvalidUserException {
+	public Employee viewEmployee(String token, int id) throws MicroserviceException, 
+		InvalidUserException {
 		log.info("Inside view employee");
 		AuthResponse authResponse;
-
 		// authenticate the user
 		try {
 			authResponse = authClient.getValidity(token).getBody();
 		} catch (Exception e) {
 			throw new MicroserviceException(e.getMessage());
 		}
-
 		// validate the token
 		if (authResponse.isValid()) {
-
 			if (authResponse.getEmpid() != id) {
 				throw new InvalidUserException("token is invalid for the given user");
 			}
-
 			// retrieve the employee details
 			Employee employee = employeeRepository.findById(id).orElse(null);
-
 			if (employee == null) {
 				log.error("Invalid employee id");
 				throw new NoSuchElementException();
@@ -240,7 +236,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 		// if the token is valid
 		if (authResponse.isValid()) {
-			log.info(""+authResponse.getEmpid());
+			log.info("" + authResponse.getEmpid());
 			Employee emp = employeeRepository.findById(authResponse.getEmpid()).orElse(null);
 			return emp.getLikedOffers().stream().sorted(Comparator.comparing(EmployeeOffers::getOpenDate).reversed())
 					.limit(3).collect(Collectors.toSet());

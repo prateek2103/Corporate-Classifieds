@@ -12,7 +12,8 @@ import com.cts.employeemicroservice.model.AuthResponse;
 @FeignClient(url = "${auth.feign.client}", name = "${auth.feign.name}")
 public interface AuthClient {
 
-	//checks the validity of the jwt token
-	@RequestMapping(path="/validate",method=RequestMethod.GET)
-	public ResponseEntity<AuthResponse> getValidity(@RequestHeader(name="Authorization", required=true) String token);
+	// checks the validity of the jwt token
+	@RequestMapping(path = "/validate", method = RequestMethod.GET)
+	public ResponseEntity<AuthResponse> getValidity(
+			@RequestHeader(name = "Authorization", required = true) String token);
 }
