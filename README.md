@@ -1,4 +1,4 @@
-# Corporate-Classifieds ( JAVA AND ANGULAR)
+# Corporate-Classifieds ( SpringBoot and Angular)
 
 ## Quickr and OLX for your corporate company.
 ### - Make and engage in offers. Gain points for each engagement you get.
